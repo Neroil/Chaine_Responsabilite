@@ -11,24 +11,25 @@ import java.util.Random;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-
 public class MapGenerator {
 
-    private final ArrayList<Rectangle> rooms = new ArrayList<>();
+    private final ArrayList<Rectangle> rooms = new ArrayList<Rectangle>();
     private final Random random = new Random();
-    String mapTileSet = "2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png";
+    private final String mapTileSet = "2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png";
+    private Texture backgroundTexture; // Declare Texture object as a field
+    private Texture tilesetTexture;
     public Vector2 validPlayerPos;
 
-    private TiledMapTileLayer generateBackground(){
+    private TiledMapTileLayer generateBackground() {
         // Generate the background
-        Texture backgroundTexture = new Texture(mapTileSet);
+        backgroundTexture = new Texture(mapTileSet); // Load the texture
         backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-        TextureRegion backgroundRegion = new TextureRegion(backgroundTexture, 0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion backgroundRegion = new TextureRegion(backgroundTexture, 144, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
         int backgroundWidth = 25;
         int backgroundHeight = 25;
 
-        //Background layer
+        // Background layer
         TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(backgroundWidth, backgroundHeight, Constants.TILE_SIZE, Constants.TILE_SIZE);
         backgroundLayer.setName("background");
         // Create a TextureRegion for the background tiles
@@ -38,20 +39,23 @@ public class MapGenerator {
         backgroundCell.setTile(new StaticTiledMapTile(backgroundRegion));
 
         // Fill the background layer with the background tiles
-        for (int x = 0; x < 25; x++) {
-            for (int y = 0; y < 25; y++) {
+        for (int x = 0; x < backgroundWidth; x++) {
+            for (int y = 0; y < backgroundHeight; y++) {
                 backgroundLayer.setCell(x, y, backgroundCell);
             }
         }
 
+
         return backgroundLayer;
     }
 
-    public void generateProceduralMap(int width, int height, int numRooms, TiledMap map, TextureRegion tilesetTexture) {
+    public void generateProceduralMap(int width, int height, int numRooms, TiledMap map) {
 
+        tilesetTexture = new Texture(mapTileSet); // Load the texture
+        tilesetTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         TiledMapTileLayer layer = new TiledMapTileLayer(width, height, Constants.TILE_SIZE, Constants.TILE_SIZE);
         layer.setName("walls");
-        TextureRegion tileRegion = new TextureRegion(tilesetTexture, 32, 32, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion tileRegion = new TextureRegion(tilesetTexture, 128, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
         cell.setTile(new StaticTiledMapTile(tileRegion));
 
@@ -61,30 +65,39 @@ public class MapGenerator {
                 layer.setCell(x, y, cell);
             }
         }
-
         // Generate rooms
         for (int i = 0; i < numRooms; i++) {
             Rectangle room = generateRandomRoom(width, height);
-            carveRoom(layer, room);
-            rooms.add(room);
+            if (room != null) {
+                carveRoom(layer, room);
+                rooms.add(room);
+            }
         }
-
         // Generate corridors between rooms
         for (int i = 0; i < rooms.size() - 1; i++) {
             Rectangle room1 = rooms.get(i);
             Rectangle room2 = getClosestRoom(rooms, room1);
-            carveCorridorBetweenRooms(layer, room1, room2);
+            if (room2 != null) {
+                carveCorridorBetweenRooms(layer, room1, room2);
+            }
         }
 
+        // Set wall tiles based on direction after all rooms and corridors have been carved
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (!isCellInsideAnyRoom(x, y)) { // Only check floor tiles
+                    setWallTilesBasedOnDirection(layer, x, y);
+                }
+            }
+        }
 
         generateValidPlayerPosition();
+
 
         map.getLayers().add(generateBackground());
 
         // Add the layer to the map
         map.getLayers().add(layer);
-
-
     }
 
     private Rectangle generateRandomRoom(int mapWidth, int mapHeight) {
@@ -98,6 +111,10 @@ public class MapGenerator {
         int roomX = random.nextInt(mapWidth - roomWidth - 1) + 1;
         int roomY = random.nextInt(mapHeight - roomHeight - 1) + 1;
 
+        // Check if the room extends beyond the map boundaries
+        if (roomX + roomWidth >= mapWidth || roomY + roomHeight >= mapHeight) {
+            return null; // Return null to skip this room
+        }
 
         return new Rectangle(roomX, roomY, roomWidth, roomHeight);
     }
@@ -106,6 +123,7 @@ public class MapGenerator {
         for (int x = (int) room.x; x < room.x + room.width; x++) {
             for (int y = (int) room.y; y < room.y + room.height; y++) {
                 layer.setCell(x, y, null); // Set cell to floor tile
+                //setWallTilesBasedOnDirection(layer, x, y);
             }
         }
     }
@@ -139,6 +157,7 @@ public class MapGenerator {
 
         while (x != (int) room2Center.x || y != (int) room2Center.y) {
             layer.setCell(x, y, null); // Set cell to floor tile
+            //setWallTilesBasedOnDirection(layer, x, y);
 
             if (Math.abs(x - room2Center.x) > Math.abs(y - room2Center.y)) {
                 x += dx;
@@ -147,8 +166,69 @@ public class MapGenerator {
             }
         }
     }
+
+    private void setWallTilesBasedOnDirection(TiledMapTileLayer layer, int x, int y) {
+        TextureRegion northWallTileRegion = new TextureRegion(tilesetTexture, 16, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion southWallTileRegion = new TextureRegion(tilesetTexture, 32, 64, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion eastWallTileRegion = new TextureRegion(tilesetTexture, 0, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion westWallTileRegion = new TextureRegion(tilesetTexture, 80, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
+
+        TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+        if (cell == null) {
+            return;
+        }
+
+        if (y >= layer.getHeight() || y < 0 || x >= layer.getWidth() || x < 0) return;
+
+        boolean northInRoom = isCellInsideAnyRoom(x, y + 1);
+        boolean southInRoom = isCellInsideAnyRoom(x, y - 1);
+        boolean eastInRoom = isCellInsideAnyRoom(x + 1, y);
+        boolean westInRoom = isCellInsideAnyRoom(x - 1, y);
+        StaticTiledMapTile northWallTile = new StaticTiledMapTile(northWallTileRegion);
+        StaticTiledMapTile southWallTile = new StaticTiledMapTile(southWallTileRegion);
+        StaticTiledMapTile eastWallTile = new StaticTiledMapTile(eastWallTileRegion);
+        StaticTiledMapTile westWallTile = new StaticTiledMapTile(westWallTileRegion);
+
+        if (!northInRoom && !southInRoom && !eastInRoom && !westInRoom) {
+            // All directions are in rooms, set a single wall tile (choose any direction)
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { northWallTile });
+        } else if (northInRoom && southInRoom && eastInRoom && westInRoom) {
+            // All directions are rooms, don't set a wall tile
+            return;
+        } else if (!northInRoom && !southInRoom && !eastInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { westWallTile });
+        } else if (!northInRoom && !southInRoom && !westInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { eastWallTile });
+        } else if (!northInRoom && !eastInRoom && !westInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { southWallTile });
+        } else if (!southInRoom && !eastInRoom && !westInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { northWallTile });
+        } else if (!northInRoom && !southInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { eastWallTile });
+        } else if (!eastInRoom && !westInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { northWallTile });
+        } else if (!northInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { northWallTile });
+        } else if (!southInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { southWallTile });
+        } else if (!eastInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { eastWallTile });
+        } else if (!westInRoom) {
+            cell.getTile().setAnimatedTiles(new StaticTiledMapTile[] { westWallTile });
+        }
+    }
+
+    private boolean isCellInsideAnyRoom(int x, int y) {
+        for (Rectangle room : rooms) {
+            if (room.contains(x, y)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<Rectangle> getWallTiles(TiledMapTileLayer layer) {
-        List<Rectangle> wallTiles = new ArrayList<>();
+        List<Rectangle> wallTiles = new ArrayList<Rectangle>();
         for (int x = 0; x < layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
                 if (layer.getCell(x, y) != null) {
@@ -160,13 +240,30 @@ public class MapGenerator {
     }
 
     public void generateValidPlayerPosition() {
+        if (rooms.isEmpty()) {
+            return; // Return if there are no rooms
+        }
+
         Rectangle room = rooms.get(random.nextInt(rooms.size()));
         float roomCenterX = room.x + (room.width / 2f);
         float roomCenterY = room.y + (room.height / 2f);
-        float randomOffsetX = random.nextInt((int) room.width / 2) - (room.width / 4f);
-        float randomOffsetY = random.nextInt((int) room.height / 2) - (room.height / 4f);
-        float x = roomCenterX + randomOffsetX;
-        float y = roomCenterY + randomOffsetY;
-        validPlayerPos = new Vector2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+
+// Check if the room's width and height are non-zero before division
+        if (room.width > 0 && room.height > 0) {
+            float randomOffsetX = random.nextInt((int) room.width / 2) - (room.width / 4f);
+            float randomOffsetY = random.nextInt((int) room.height / 2) - (room.height / 4f);
+            float x = roomCenterX + randomOffsetX;
+            float y = roomCenterY + randomOffsetY;
+            validPlayerPos = new Vector2(x * Constants.TILE_SIZE , y * Constants.TILE_SIZE);
+        } else {
+            // Handle the case where the room's width or height is zero
+            validPlayerPos = new Vector2(roomCenterX * Constants.TILE_SIZE, roomCenterY * Constants.TILE_SIZE);
+        }
+    }
+
+    public void dispose() {
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose(); // Dispose the background texture
+        }
     }
 }
