@@ -44,7 +44,7 @@ public class MapGenerator implements Disposable {
         tilesetTexture = new Texture(MAP_TILE_SET);
         tilesetTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        WALL_CELLS[0] = new WallCell(tilesetTexture, 16, 0); // North wall
+        WALL_CELLS[0] = new WallCell(tilesetTexture, 80, 16); // General Wall
         WALL_CELLS[1] = new WallCell(tilesetTexture, 16, 64); // South wall
         WALL_CELLS[2] = new WallCell(tilesetTexture, 80, 48); // East wall
         WALL_CELLS[3] = new WallCell(tilesetTexture, 0, 48); // West wall
@@ -211,33 +211,8 @@ public class MapGenerator implements Disposable {
 
         if (!northInRoom && !southInRoom && !eastInRoom && !westInRoom) {
             cell.setTile(WALL_CELLS[4].getTile());
-//        } else if (northInRoom && southInRoom && eastInRoom && westInRoom) {
-//            return;
-//        } else if (!northInRoom && !southInRoom && !eastInRoom) {
-//            cell.setTile(WALL_CELLS[3].getTile());
-//        } else if (!northInRoom && !southInRoom && !westInRoom) {
-//            cell.setTile(WALL_CELLS[2].getTile());
-//        } else if (!northInRoom && !eastInRoom && !westInRoom) {
-//            cell.setTile(WALL_CELLS[1].getTile());
-//        } else if (!southInRoom && !eastInRoom && !westInRoom) {
-//            cell.setTile(WALL_CELLS[0].getTile());
-//        } else if (!northInRoom && !southInRoom) {
-//            cell.setTile(WALL_CELLS[2].getTile());
-//        } else if (!eastInRoom && !westInRoom) {
-//            cell.setTile(WALL_CELLS[0].getTile());
-        } else if (northInRoom) {
-            cell.setTile(WALL_CELLS[WallDir.SOUTH.ordinal()].getTile());
-        } else if (southInRoom) {
-            cell.setTile(WALL_CELLS[WallDir.NORTH.ordinal()].getTile());
-            layer.setCell(x, y - 1, cell); // I have no clue why I need to put y-1 here
-            return;
-        } else if (eastInRoom) {
-            cell.setTile(WALL_CELLS[WallDir.WEST.ordinal()].getTile());
-
-        } else if (westInRoom) {
-            cell.setTile(WALL_CELLS[WallDir.EAST.ordinal()].getTile());
-            layer.setCell(x - 1, y, cell); // I have no clue why I need to put x-1 here
-            return;
+        } else {
+            cell.setTile(WALL_CELLS[0].getTile());
         }
 
         layer.setCell(x, y, cell);
@@ -245,12 +220,12 @@ public class MapGenerator implements Disposable {
 
     private boolean isCellInsideAnyRoom(int x, int y) {
         for (Rectangle room : rooms) {
-            if (room.contains(x, y)) {
+            if (x >= room.x && x < room.x + room.width && y >= room.y && y < room.y + room.height) {
                 return true;
             }
         }
         for (Rectangle corridor : corridors) {
-            if (corridor.contains(x, y)) {
+            if (x >= corridor.x && x < corridor.x + corridor.width && y >= corridor.y && y < corridor.y + corridor.height) {
                 return true;
             }
         }

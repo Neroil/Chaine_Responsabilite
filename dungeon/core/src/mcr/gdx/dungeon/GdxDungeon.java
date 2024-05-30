@@ -30,7 +30,7 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
 
     public GdxDungeon() {
         inputHandler = new InputHandler(this);
-        spatialHashMap = new SpatialHashMap(25 * Constants.TILE_SIZE, 25 * Constants.TILE_SIZE);
+        spatialHashMap = new SpatialHashMap(Constants.MAP_SIZE * Constants.TILE_SIZE, Constants.MAP_SIZE * Constants.TILE_SIZE);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         mapGenerator.initializeTextures();
 
         map = new TiledMap();
-        mapGenerator.generateProceduralMap(25, 25, 5, map);
+        mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -125,7 +125,7 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         mapRenderer.dispose();
 
         map = new TiledMap();
-        mapGenerator.generateProceduralMap(25, 25, 5, map);
+        mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
