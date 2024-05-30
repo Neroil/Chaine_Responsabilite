@@ -46,4 +46,14 @@ public class SpatialHashMap {
         }
         return potentialColliders;
     }
+
+    public void clear() {
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid[x].length; y++) {
+                if (grid[x][y] != null) {
+                    grid[x][y].clear();
+                }
+            }
+        }
+    }
 }
