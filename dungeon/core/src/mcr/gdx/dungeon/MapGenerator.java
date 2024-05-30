@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class MapGenerator implements Disposable {
     private static final String MAP_TILE_SET = "2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png";
-    private static final WallCell[] WALL_CELLS = new WallCell[4];
+    private static final WallCell[] WALL_CELLS = new WallCell[5];
 
     private final Random random;
     private final Array<Rectangle> rooms;
@@ -33,6 +33,10 @@ public class MapGenerator implements Disposable {
         corridors = new Array<>();
     }
 
+    private enum WallDir{
+        NORTH, SOUTH, EAST, WEST, INSIDE
+    }
+
     public void initializeTextures() {
         backgroundTexture = new Texture(MAP_TILE_SET);
         backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
@@ -41,9 +45,10 @@ public class MapGenerator implements Disposable {
         tilesetTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         WALL_CELLS[0] = new WallCell(tilesetTexture, 16, 0); // North wall
-        WALL_CELLS[1] = new WallCell(tilesetTexture, 32, 64); // South wall
-        WALL_CELLS[2] = new WallCell(tilesetTexture, 0, 16); // East wall
-        WALL_CELLS[3] = new WallCell(tilesetTexture, 80, 16); // West wall
+        WALL_CELLS[1] = new WallCell(tilesetTexture, 16, 64); // South wall
+        WALL_CELLS[2] = new WallCell(tilesetTexture, 80, 48); // East wall
+        WALL_CELLS[3] = new WallCell(tilesetTexture, 0, 48); // West wall
+        WALL_CELLS[4] = new WallCell(tilesetTexture, 128, 112); // Inside wall
     }
 
     public void generateProceduralMap(int width, int height, int numRooms, TiledMap map) {
@@ -205,29 +210,34 @@ public class MapGenerator implements Disposable {
         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
 
         if (!northInRoom && !southInRoom && !eastInRoom && !westInRoom) {
-            cell.setTile(WALL_CELLS[0].getTile());
-        } else if (northInRoom && southInRoom && eastInRoom && westInRoom) {
+            cell.setTile(WALL_CELLS[4].getTile());
+//        } else if (northInRoom && southInRoom && eastInRoom && westInRoom) {
+//            return;
+//        } else if (!northInRoom && !southInRoom && !eastInRoom) {
+//            cell.setTile(WALL_CELLS[3].getTile());
+//        } else if (!northInRoom && !southInRoom && !westInRoom) {
+//            cell.setTile(WALL_CELLS[2].getTile());
+//        } else if (!northInRoom && !eastInRoom && !westInRoom) {
+//            cell.setTile(WALL_CELLS[1].getTile());
+//        } else if (!southInRoom && !eastInRoom && !westInRoom) {
+//            cell.setTile(WALL_CELLS[0].getTile());
+//        } else if (!northInRoom && !southInRoom) {
+//            cell.setTile(WALL_CELLS[2].getTile());
+//        } else if (!eastInRoom && !westInRoom) {
+//            cell.setTile(WALL_CELLS[0].getTile());
+        } else if (northInRoom) {
+            cell.setTile(WALL_CELLS[WallDir.SOUTH.ordinal()].getTile());
+        } else if (southInRoom) {
+            cell.setTile(WALL_CELLS[WallDir.NORTH.ordinal()].getTile());
+            layer.setCell(x, y - 1, cell); // I have no clue why I need to put y-1 here
             return;
-        } else if (!northInRoom && !southInRoom && !eastInRoom) {
-            cell.setTile(WALL_CELLS[3].getTile());
-        } else if (!northInRoom && !southInRoom && !westInRoom) {
-            cell.setTile(WALL_CELLS[2].getTile());
-        } else if (!northInRoom && !eastInRoom && !westInRoom) {
-            cell.setTile(WALL_CELLS[1].getTile());
-        } else if (!southInRoom && !eastInRoom && !westInRoom) {
-            cell.setTile(WALL_CELLS[0].getTile());
-        } else if (!northInRoom && !southInRoom) {
-            cell.setTile(WALL_CELLS[2].getTile());
-        } else if (!eastInRoom && !westInRoom) {
-            cell.setTile(WALL_CELLS[0].getTile());
-        } else if (!northInRoom) {
-            cell.setTile(WALL_CELLS[0].getTile());
-        } else if (!southInRoom) {
-            cell.setTile(WALL_CELLS[1].getTile());
-        } else if (!eastInRoom) {
-            cell.setTile(WALL_CELLS[2].getTile());
-        } else if (!westInRoom) {
-            cell.setTile(WALL_CELLS[3].getTile());
+        } else if (eastInRoom) {
+            cell.setTile(WALL_CELLS[WallDir.WEST.ordinal()].getTile());
+
+        } else if (westInRoom) {
+            cell.setTile(WALL_CELLS[WallDir.EAST.ordinal()].getTile());
+            layer.setCell(x - 1, y, cell); // I have no clue why I need to put x-1 here
+            return;
         }
 
         layer.setCell(x, y, cell);
