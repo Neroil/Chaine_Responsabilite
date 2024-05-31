@@ -54,6 +54,12 @@ public class InputHandler extends InputAdapter {
             direction = Direction.DOWN;
         }
 
+        if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            moveDelay = 0.05f;
+        } else {
+            moveDelay = 0.2f;
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             game.resetGame();
             return;
@@ -94,7 +100,6 @@ public class InputHandler extends InputAdapter {
                 break;
             }
         }
-
         if (!collisionDetected) {
             player.position.set(newPosition);
         }

@@ -43,7 +43,7 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         mapGenerator.initializeTextures();
 
         map = new TiledMap();
-        mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
+        mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, Constants.NUM_ROOMS, map);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
@@ -106,8 +106,8 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         // Adjust the viewport based on the aspect ratio
         if (targetAspectRatio > baseAspectRatio) {
             // Window is wider than the base aspect ratio
-            camera.viewportHeight = baseHeight * 0.7f;
-            camera.viewportWidth = baseHeight * targetAspectRatio * 0.7f;
+            camera.viewportHeight = baseHeight * 1f;
+            camera.viewportWidth = baseHeight * targetAspectRatio * 1f;
         } else {
             // Window is taller than the base aspect ratio
             camera.viewportWidth = baseWidth;
@@ -125,6 +125,8 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         mapRenderer.dispose();
 
         map = new TiledMap();
+
+        mapGenerator.resetMap();
         mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);

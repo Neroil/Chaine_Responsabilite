@@ -12,7 +12,7 @@ public class Constants {
     public static final int MAP_HEIGHT = 25;
     public static final int MIN_ROOM_WIDTH = 5;
     public static final int MIN_ROOM_HEIGHT = 5;
-    public static final int MAX_ROOM_WIDTH = 10;
-    public static final int MAX_ROOM_HEIGHT = 10;
-    public static final int MAP_SIZE = 25;
+    public static final int MAX_ROOM_WIDTH = 15;
+    public static final int MAX_ROOM_HEIGHT = 15;
+    public static final int MAP_SIZE = 100;
 }
