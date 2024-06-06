@@ -22,7 +22,14 @@ public class Player {
   }
 
   // Factoriser avec une super-classe Character -> reduceResource, pour mana ou vigor
-  public void reduceVigor(int cost) { vigor -= cost; }
+  public void reduceVigor(int cost) {
+    // Checker si ca va en-dessous
+    vigor -= cost;
+  }
+
+  public void reduceMana(int cost){
+    mana -= cost;
+  }
 
   public int getLifePoints() {
     return lifePoints;
