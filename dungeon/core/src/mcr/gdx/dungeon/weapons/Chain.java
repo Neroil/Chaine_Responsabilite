@@ -1,8 +1,8 @@
-package weapons;
+package mcr.gdx.dungeon.weapons;
 
-import weapons.handlers.RessourceHandler;
-import weapons.handlers.MagicalRessourceHandler;
-import weapons.handlers.PhysicalRessourceHandler;
+import mcr.gdx.dungeon.weapons.handlers.MagicalRessourceHandler;
+import mcr.gdx.dungeon.weapons.handlers.PhysicalRessourceHandler;
+import mcr.gdx.dungeon.weapons.handlers.RessourceHandler;
 
 public class Chain {
 

@@ -1,4 +1,4 @@
-package weapons;
+package mcr.gdx.dungeon.weapons;
 
 import java.sql.Timestamp;
 

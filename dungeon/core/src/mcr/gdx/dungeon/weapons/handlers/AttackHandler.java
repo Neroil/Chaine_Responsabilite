@@ -1,4 +1,4 @@
-package weapons.handlers;
+package mcr.gdx.dungeon.weapons.handlers;
 
 
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;

@@ -1,6 +1,4 @@
-package weapons;
-
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+package mcr.gdx.dungeon.weapons;
 
 public class MagicalSceptre extends MagicalWeapon {
 

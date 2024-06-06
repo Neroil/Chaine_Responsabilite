@@ -1,7 +1,4 @@
-package weapons.handlers;
-
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
-import mcr.gdx.dungeon.ChainOfResponsibility.Request;
+package mcr.gdx.dungeon.weapons.handlers;
 
 public class CooldownHandler extends AttackHandler {
 

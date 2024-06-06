@@ -1,4 +1,4 @@
-package weapons;
+package mcr.gdx.dungeon.weapons;
 
 public class Gourdin extends PhysicalWeapon {
 
