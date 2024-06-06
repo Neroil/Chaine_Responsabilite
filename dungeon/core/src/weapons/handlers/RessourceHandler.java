@@ -6,14 +6,7 @@ import mcr.gdx.dungeon.characters.Enemy;
 import mcr.gdx.dungeon.characters.Player;
 import weapons.Weapon;
 
-public abstract class AttackHandler {
-
-  private AttackHandler successor;
-
-  public AttackHandler setSuccessor(AttackHandler successor) {
-    this.successor = successor;
-    return successor;
-  }
+public abstract class RessourceHandler extends AttackHandler {
 
   protected abstract boolean checkResources(AttackRequest request);
 
