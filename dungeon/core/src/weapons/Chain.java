@@ -1,14 +1,14 @@
 package weapons;
 
-import weapons.handlers.AttackHandler;
-import weapons.handlers.MagicalAttackHandler;
-import weapons.handlers.PhysicalAttackHandler;
+import weapons.handlers.RessourceHandler;
+import weapons.handlers.MagicalRessourceHandler;
+import weapons.handlers.PhysicalRessourceHandler;
 
 public class Chain {
 
   public Chain() {
-    AttackHandler magicalHandler = new MagicalAttackHandler();
-    AttackHandler physicalHandler = new PhysicalAttackHandler();
+    RessourceHandler magicalHandler = new MagicalRessourceHandler();
+    RessourceHandler physicalHandler = new PhysicalRessourceHandler();
 
     magicalHandler.setSuccessor(physicalHandler);
   }

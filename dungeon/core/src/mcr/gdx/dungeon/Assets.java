@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Assets {
-    private static final Map<String, Texture> textures = new HashMap<>();
+    private static final Map<String, Texture> textures = new HashMap<String, Texture>();
 
     public static Texture get(String path) {
         Texture texture = textures.get(path);

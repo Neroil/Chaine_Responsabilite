@@ -10,21 +10,21 @@ import mcr.gdx.dungeon.elements.CharacterTile;
 import java.util.Set;
 
 public class InputHandler extends InputAdapter {
-
+    //TODO: Gérer gestion de STEP
     enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
 
     private Direction direction = null;
     private Direction lastDirection = null;
-    private final GdxDungeon game;
+    private final Game game;
     private float moveDelay = 0.2f;// Delay in seconds between each movement
     private float changeDirectionDelay = 0.1f;// Delay in seconds between each direction change
     private float changeDirectionTimer = 0f;
     private float moveTimer = 0f;
     private boolean isKeyPressed = false;// Timer to track the elapsed time
 
-    public InputHandler(GdxDungeon game) {
+    public InputHandler(Game game) {
         this.game = game;
     }
 
@@ -61,7 +61,7 @@ public class InputHandler extends InputAdapter {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.R)) {
-            game.resetGame();
+            this.game.resetGame();
             return;
         }
 

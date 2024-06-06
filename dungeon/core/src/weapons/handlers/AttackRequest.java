@@ -1,7 +1,8 @@
 package weapons.handlers;
 
-import characters.Enemy;
-import characters.Player;
+import mcr.gdx.dungeon.characters.Enemy;
+import mcr.gdx.dungeon.characters.Player;
+import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import weapons.Weapon;
 
 public abstract class AttackRequest {

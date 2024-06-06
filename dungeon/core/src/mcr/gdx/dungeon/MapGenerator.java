@@ -241,7 +241,7 @@ public class MapGenerator implements Disposable {
         layer.setCell(x, y, cell);
     }
 
-    private boolean isCellInsideAnyRoom(int x, int y) {
+    boolean isCellInsideAnyRoom(int x, int y) {
         for (Rectangle room : rooms) {
             if (x >= room.x && x < room.x + room.width && y >= room.y && y < room.y + room.height) {
                 return true;
