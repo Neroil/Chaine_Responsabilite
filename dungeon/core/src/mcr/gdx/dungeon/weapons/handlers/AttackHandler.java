@@ -6,10 +6,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 
 abstract public class AttackHandler extends GenericHandler {
 
-    @Override
-    protected boolean handleRequest(Request request) {
-        return handleAttackRequest((AttackRequest) request);
-    }
+  @Override
+  protected boolean handleRequest(Request request) {
+    return handleAttackRequest((AttackRequest) request);
+  }
 
-    abstract boolean handleAttackRequest(AttackRequest request);
+  protected abstract boolean handleAttackRequest(AttackRequest request);
 }
