@@ -7,7 +7,6 @@ public abstract class Weapon {
   private final int damage;
   private final int cooldown;
   private Timestamp lastAttack;
-  private boolean available;
   private final int range;
   private final int cost;
 
@@ -15,7 +14,6 @@ public abstract class Weapon {
     this.name = name;
     this.damage = damage;
     this.cooldown = cooldown;
-    this.available = true;
     this.range = range;
     this.cost = cost;
   }
@@ -30,8 +28,8 @@ public abstract class Weapon {
     lastAttack = new Timestamp(System.currentTimeMillis());
   }
 
-  public boolean isAvailable() {
-    return lastAttack == null || (System.currentTimeMillis() - lastAttack.getTime()) > cooldown;
+  public long getLastAttack() {
+    return lastAttack == null ? -1 : lastAttack.getTime();
   }
 
   public int getRange() { return range; }
