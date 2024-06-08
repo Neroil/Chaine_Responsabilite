@@ -1,10 +1,7 @@
-package mcr.gdx.dungeon.weapons.handlers;
+package mcr.gdx.dungeon.weapons;
 
 import mcr.gdx.dungeon.characters.Player;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
-import mcr.gdx.dungeon.weapons.Weapon;
-
-import java.sql.Timestamp;
 
 public abstract class AttackRequest implements Request {
 

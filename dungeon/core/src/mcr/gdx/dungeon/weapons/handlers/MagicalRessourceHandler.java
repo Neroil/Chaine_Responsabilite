@@ -1,6 +1,7 @@
 package mcr.gdx.dungeon.weapons.handlers;
 
 import mcr.gdx.dungeon.characters.Player;
+import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class MagicalRessourceHandler extends RessourceHandler {
 

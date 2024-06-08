@@ -3,6 +3,7 @@ package mcr.gdx.dungeon.weapons.handlers;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
+import mcr.gdx.dungeon.weapons.AttackRequest;
 
 abstract public class AttackHandler extends GenericHandler {
 

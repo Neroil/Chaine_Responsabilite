@@ -1,5 +1,7 @@
 package mcr.gdx.dungeon.weapons.handlers;
 
+import mcr.gdx.dungeon.weapons.AttackRequest;
+
 public class CooldownHandler extends AttackHandler {
 
   @Override
