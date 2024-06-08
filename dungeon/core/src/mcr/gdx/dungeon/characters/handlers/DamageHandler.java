@@ -7,7 +7,7 @@ public class DamageHandler extends GenericHandler {
 
 
     @Override
-    protected boolean handleRequest(Request request) {
+    public boolean handleRequest(Request request) {
         return false;
     }
 

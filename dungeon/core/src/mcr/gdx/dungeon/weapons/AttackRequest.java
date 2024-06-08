@@ -1,17 +1,18 @@
 package mcr.gdx.dungeon.weapons;
 
-import mcr.gdx.dungeon.characters.Player;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
+import mcr.gdx.dungeon.elements.PlayerTile;
+import mcr.gdx.dungeon.elements.WeaponTile;
 
-public abstract class AttackRequest implements Request {
+public class AttackRequest implements Request {
 
-  private final Player player;
+  private final PlayerTile player;
   private int weaponCost;
   private int weaponDamage;
   private final int weaponCooldown;
   private final long weaponLastAttack;
 
-  public AttackRequest(Player player, Weapon weapon) {
+  public AttackRequest(PlayerTile player, WeaponTile weapon) {
     this.player = player;
     this.weaponCost = weapon.getCost();
     this.weaponDamage = weapon.getDamage();
@@ -19,7 +20,7 @@ public abstract class AttackRequest implements Request {
     this.weaponLastAttack = weapon.getLastAttack();
   }
 
-  public Player getPlayer() {
+  public PlayerTile getPlayer() {
     return player;
   }
 

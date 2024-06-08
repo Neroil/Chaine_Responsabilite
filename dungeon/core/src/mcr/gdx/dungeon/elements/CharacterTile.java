@@ -141,4 +141,8 @@ public class CharacterTile extends SpriteTile{
 
     }
 
+    public void hit(Request req){
+        //damagedChain(req);
+    }
+
 }

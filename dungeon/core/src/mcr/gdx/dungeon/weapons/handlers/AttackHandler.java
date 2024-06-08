@@ -9,7 +9,7 @@ abstract public class AttackHandler extends GenericHandler {
 
 
   @Override
-  protected boolean handleRequest(Request request) {
+  public boolean handleRequest(Request request) {
     return handleAttackRequest((AttackRequest) request);
   }
 

@@ -9,7 +9,7 @@ abstract public class GenericHandler {
     return successor;
   }
 
-  protected abstract boolean handleRequest(Request request);
+  public abstract boolean handleRequest(Request request);
 
   protected boolean invokeSuccessor(Request request) {
     if (successor != null)
