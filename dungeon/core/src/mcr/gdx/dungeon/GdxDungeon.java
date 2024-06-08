@@ -2,9 +2,12 @@ package mcr.gdx.dungeon;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -15,6 +18,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import mcr.gdx.dungeon.elements.CharacterTile;
 import mcr.gdx.dungeon.InputHandler;
+
+import java.util.Random;
 
 public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private SpriteBatch batch;
@@ -27,6 +32,9 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private final InputHandler inputHandler;
     private final SpatialHashMap spatialHashMap;
     private float pixelScaleFactor = 1.0f;
+
+    private GameHUD gameHUD;
+
 
     public GdxDungeon() {
         inputHandler = new InputHandler(this);
@@ -54,6 +62,10 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         initializeCollisionDetection();
 
         Gdx.input.setInputProcessor(inputHandler);
+
+        gameHUD = new GameHUD();
+
+
     }
 
     private void initializeCollisionDetection() {
@@ -85,12 +97,17 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         player.draw(batch);
         batch.end();
 
+
+
         // Render the wall layer
         mapRenderer.render(new int[]{1});
         Camera.updateCameraPosition(player, camera);
 
         // Handle player input
         inputHandler.handleInput(player, spatialHashMap,Gdx.graphics.getDeltaTime());
+
+        gameHUD.render();
+
     }
 
     private void updateCamera() {
@@ -144,5 +161,8 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         map.dispose();
         mapRenderer.dispose();
         mapGenerator.dispose();
+
+
+        gameHUD.dispose();
     }
 }
