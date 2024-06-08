@@ -18,4 +18,5 @@ abstract public class GenericHandler {
     System.out.println("All handler passed!");
     return true;
   }
+
 }

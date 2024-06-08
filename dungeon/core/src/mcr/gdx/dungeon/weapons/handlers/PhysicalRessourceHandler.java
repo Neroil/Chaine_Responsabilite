@@ -5,6 +5,7 @@ import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class PhysicalRessourceHandler extends RessourceHandler {
 
+
   protected boolean checkResources(AttackRequest request) {
     int vigor = request.getPlayer().getVigor();
     int cost = request.getWeaponCost();
@@ -18,5 +19,6 @@ public class PhysicalRessourceHandler extends RessourceHandler {
 
     player.reduceVigor(cost);
   }
+
 
 }

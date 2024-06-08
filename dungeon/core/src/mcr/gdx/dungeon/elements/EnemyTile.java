@@ -7,11 +7,11 @@ import mcr.gdx.dungeon.SpatialHashMap;
 
 import java.util.LinkedList;
 
-public class Enemy extends CharacterTile{
+public class EnemyTile extends CharacterTile{
 
-    private CharacterTile player;
+    private final CharacterTile player;
 
-    public Enemy(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, CharacterTile player) {
+    public EnemyTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, CharacterTile player) {
         super(position, texture, collidableEntities);
         this.player = player;
     }

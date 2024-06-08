@@ -1,5 +1,6 @@
 package mcr.gdx.dungeon.weapons.handlers;
 
+import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class CooldownHandler extends AttackHandler {
@@ -14,4 +15,5 @@ public class CooldownHandler extends AttackHandler {
     else
       return false;
   }
+
 }

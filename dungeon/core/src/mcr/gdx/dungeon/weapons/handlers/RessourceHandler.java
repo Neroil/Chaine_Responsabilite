@@ -4,6 +4,7 @@ import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public abstract class RessourceHandler extends AttackHandler {
 
+
   protected abstract boolean checkResources(AttackRequest request);
 
   protected abstract void updateResources(AttackRequest request);

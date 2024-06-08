@@ -11,18 +11,34 @@ import com.badlogic.gdx.math.Vector2;
 import mcr.gdx.dungeon.elements.CharacterTile;
 
 import java.util.LinkedList;
+import java.util.ArrayList;
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
-import mcr.gdx.dungeon.elements.Enemy;
+import mcr.gdx.dungeon.elements.EnemyTile;
+import mcr.gdx.dungeon.elements.ItemTile;
+import mcr.gdx.dungeon.elements.PlayerTile;
+import mcr.gdx.dungeon.elements.items.*;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
 
 public class Game {
-    private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+    private LinkedList<EnemyTile> enemies = new LinkedList<EnemyTile>();
     private LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
+    private LinkedList<ItemTile> items = new LinkedList<ItemTile>();
+
+    // Item creators for random item generation
+    private static final ItemCreator[] itemCreators = new ItemCreator[] {
+            Sword::new,
+            Club::new,
+            MagicScepter::new,
+            DamageRing::new,
+            ManaRing::new,
+            VigorRing::new
+    };
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private CharacterTile player;
+    private PlayerTile player;
     private MapGenerator mapGenerator;
     private InputHandler inputHandler;
     private SpatialHashMap spatialHashMap;
@@ -62,7 +78,7 @@ public class Game {
 
 
         TextureRegion playerRegion = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
-        player = new CharacterTile(mapGenerator.validPlayerPos, playerRegion, collidableEntities);
+        player = new PlayerTile(mapGenerator.validPlayerPos, playerRegion, collidableEntities, this);
         player.snapToTileCenter();
         collidableEntities.add(player);
         spatialHashMap = new SpatialHashMap(Constants.MAP_SIZE * Constants.TILE_SIZE, Constants.MAP_SIZE * Constants.TILE_SIZE);
@@ -75,6 +91,7 @@ public class Game {
         // Generate enemies
         generateEnemies();
         //TODO: Générer armes
+        generateItems();
     }
 
     public InputHandler getInputHandler() {
@@ -85,13 +102,33 @@ public class Game {
         for (int i = 0; i < Constants.NUM_ENEMIES; i++) {
             Vector2 position = mapGenerator.generateRandomPositionInRoom();
             TextureRegion enemyTexture = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
-            Enemy enemy = new Enemy(position, enemyTexture, collidableEntities, player);
-            enemy.snapToTileCenter();
-            enemies.add(enemy);
-            collidableEntities.add(enemy);
+            EnemyTile enemyTile = new EnemyTile(position, enemyTexture, collidableEntities, player);
+            enemyTile.snapToTileCenter();
+            enemies.add(enemyTile);
+            collidableEntities.add(enemyTile);
         }
     }
 
+    // Functional interface for creating items
+    @FunctionalInterface
+    private interface ItemCreator { ItemTile create(Vector2 position); }
+
+    private void generateItems() {
+        for (int i = 0; i < Constants.NUM_ITEMS; i++) {
+            Vector2 position = mapGenerator.generateRandomPositionInRoom();
+
+            // Randomly select an item creator
+            int rdm = random.nextInt(itemCreators.length);
+            ItemTile item = itemCreators[rdm].create(position);
+
+            item.snapToTileCenter();
+            items.add(item);
+        }
+    }
+
+    public LinkedList<ItemTile> getItems() {
+        return items;
+    }
 
     public SpatialHashMap getSpatialHashMap() {
         return spatialHashMap;
@@ -101,6 +138,7 @@ public class Game {
         map.dispose();
         mapRenderer.dispose();
         enemies.clear();
+        items.clear();
         collidableEntities.clear();
         map = new TiledMap();
         mapGenerator.resetMap();
@@ -110,8 +148,12 @@ public class Game {
         player.snapToTileCenter();
         collidableEntities.add(player);
 
+        gameHUD = new GameHUD(player);
+
         isGameOver = false;
         generateEnemies();
+        generateItems();
+
         initializeCollisionDetection();
     }
 
@@ -135,10 +177,23 @@ public class Game {
         //handleChain();
         // ...
         ++step;
-        for(Enemy enemy : enemies){
-            enemy.move(spatialHashMap);
+        //Move enemies
+        for(EnemyTile enemyTile : enemies){
+            enemyTile.move(spatialHashMap);
         }
+
+        ItemTile itemToRemove = null;
+        for (ItemTile item : getItems()){
+            if (player.position.equals(item.position)) {
+                player.pickUpItem(item);
+                itemToRemove = item;
+                break;
+            }
+        }
+        items.remove(itemToRemove);
     }
+
+
 
 //    public void handleChain() {
 //        firstHandler.handleRequest();
@@ -154,17 +209,32 @@ public class Game {
     }
 
     public void render(SpriteBatch batch) {
+
+        // Update damage indicators
+        for(CharacterTile c : collidableEntities){
+            c.update(Gdx.graphics.getDeltaTime());
+        }
+
         // Render the background layer
         getMapRenderer().render(new int[]{0});
 
         // Draw the player
         batch.begin();
-        player.draw(batch);
-        for (Enemy enemy : enemies) {
-            enemy.draw(batch);
+
+        for (EnemyTile enemyTile : enemies) {
+            enemyTile.draw(batch);
         }
 
+        for (ItemTile item : items) {
+            item.draw(batch);
+        }
+
+        player.draw(batch);
+        gameHUD.render(batch);
+
         batch.end();
+
+        gameHUD.render();
 
         // Render the wall layer
         getMapRenderer().render(new int[]{1});

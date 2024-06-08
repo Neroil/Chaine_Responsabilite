@@ -10,4 +10,6 @@ public class DamageHandler extends GenericHandler {
     protected boolean handleRequest(Request request) {
         return false;
     }
+
+
 }

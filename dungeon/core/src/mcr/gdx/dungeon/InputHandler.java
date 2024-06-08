@@ -74,14 +74,12 @@ public class InputHandler extends InputAdapter {
                 changeDirectionTimer = 0f;
                 lastDirection = direction;
                 player.move(new Vector2(horizontalInput, verticalInput), spatialHashMap);
-                game.updateStep();
             } else {
                 moveTimer += delta; // Accumulate the elapsed time
                 changeDirectionTimer += delta;
                 if (moveTimer >= moveDelay) { // Check if enough time has elapsed
                     moveTimer = 0f; // Reset the timer
                     player.move(new Vector2(horizontalInput, verticalInput), spatialHashMap);
-                    game.updateStep();
                 }
             }
 
