@@ -137,6 +137,24 @@ public class MapGenerator implements Disposable {
         return closestRoom;
     }
 
+    public Vector2 generateRandomPositionInRoom() {
+        if (rooms.isEmpty()) {
+            throw new IllegalStateException("No rooms have been generated yet.");
+        }
+
+        Rectangle randomRoom = rooms.random(); // Choose a random room from the list
+        int x = (int) (randomRoom.x + random.nextInt((int) randomRoom.width));
+        int y = (int) (randomRoom.y + random.nextInt((int) randomRoom.height));
+
+        // Ensure the position is within the room's bounds
+        x = Math.max(x, (int) randomRoom.x);
+        x = Math.min(x, (int) (randomRoom.x + randomRoom.width - 1));
+        y = Math.max(y, (int) randomRoom.y);
+        y = Math.min(y, (int) (randomRoom.y + randomRoom.height - 1));
+
+        return new Vector2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); // Convert to world coordinates
+    }
+
     private void carveCorridorBetweenRooms(TiledMapTileLayer layer, Rectangle room1, Rectangle room2) {
         int x1 = (int) room1.x;
         int y1 = (int) room1.y;

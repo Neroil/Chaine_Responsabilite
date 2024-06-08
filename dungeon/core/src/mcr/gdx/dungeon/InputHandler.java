@@ -73,16 +73,18 @@ public class InputHandler extends InputAdapter {
                 isKeyPressed = true;
                 changeDirectionTimer = 0f;
                 lastDirection = direction;
-                updatePlayerPosition(player, newPosition, spatialHashMap);
-
+                player.move(new Vector2(horizontalInput, verticalInput), spatialHashMap);
+                game.updateStep();
             } else {
                 moveTimer += delta; // Accumulate the elapsed time
                 changeDirectionTimer += delta;
                 if (moveTimer >= moveDelay) { // Check if enough time has elapsed
                     moveTimer = 0f; // Reset the timer
-                    updatePlayerPosition(player, newPosition, spatialHashMap);
+                    player.move(new Vector2(horizontalInput, verticalInput), spatialHashMap);
+                    game.updateStep();
                 }
             }
+
         } else {
             isKeyPressed = false;
             moveTimer = 0f; // Reset the timer when no keys are pressed
@@ -90,18 +92,20 @@ public class InputHandler extends InputAdapter {
         }
     }
 
-    private void updatePlayerPosition(CharacterTile player, Vector2 newPosition, SpatialHashMap spatialHashMap) {
-        Rectangle newBoundingBox = new Rectangle(newPosition.x, newPosition.y, player.getBoundingBox().width, player.getBoundingBox().height);
-        Set<Rectangle> potentialColliders = spatialHashMap.getPotentialColliders(newBoundingBox);
-        boolean collisionDetected = false;
-        for (Rectangle wallTile : potentialColliders) {
-            if (newBoundingBox.overlaps(wallTile)) {
-                collisionDetected = true;
-                break;
-            }
-        }
-        if (!collisionDetected) {
-            player.position.set(newPosition);
-        }
-    }
+//    private void updatePlayerPosition(CharacterTile player, Vector2 newPosition, SpatialHashMap spatialHashMap) {
+//        Rectangle newBoundingBox = new Rectangle(newPosition.x, newPosition.y, player.getBoundingBox().width, player.getBoundingBox().height);
+//        Set<Rectangle> potentialColliders = spatialHashMap.getPotentialColliders(newBoundingBox);
+//        boolean collisionDetected = false;
+//        for (Rectangle wallTile : potentialColliders) {
+//            if (newBoundingBox.overlaps(wallTile)) {
+//                collisionDetected = true;
+//                break;
+//            }
+//        }
+//        if (!collisionDetected) {
+//            player.position.set(newPosition);
+//        }
+//
+//
+//    }
 }

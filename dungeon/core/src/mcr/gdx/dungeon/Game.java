@@ -19,12 +19,14 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class Game {
     private LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+    private LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
     private CharacterTile player;
     private MapGenerator mapGenerator;
     private InputHandler inputHandler;
     private SpatialHashMap spatialHashMap;
+    private int step = 0;
     //private int score;
     private boolean isGameOver;
 
@@ -60,8 +62,9 @@ public class Game {
 
 
         TextureRegion playerRegion = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
-        player = new CharacterTile(mapGenerator.validPlayerPos, playerRegion);
+        player = new CharacterTile(mapGenerator.validPlayerPos, playerRegion, collidableEntities);
         player.snapToTileCenter();
+        collidableEntities.add(player);
         spatialHashMap = new SpatialHashMap(Constants.MAP_SIZE * Constants.TILE_SIZE, Constants.MAP_SIZE * Constants.TILE_SIZE);
         initializeCollisionDetection();
 
@@ -80,22 +83,15 @@ public class Game {
 
     private void generateEnemies() {
         for (int i = 0; i < Constants.NUM_ENEMIES; i++) {
-            Vector2 position;
-            do {
-                position = generateRandomPosition();
-            } while (!mapGenerator.isCellInsideAnyRoom((int) position.x, (int) position.y));
-
+            Vector2 position = mapGenerator.generateRandomPositionInRoom();
             TextureRegion enemyTexture = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
-            Enemy enemy = new Enemy(position, enemyTexture);
+            Enemy enemy = new Enemy(position, enemyTexture, collidableEntities, player);
+            enemy.snapToTileCenter();
             enemies.add(enemy);
+            collidableEntities.add(enemy);
         }
     }
 
-    private Vector2 generateRandomPosition() {
-        int x = random.nextInt(Constants.MAP_SIZE);
-        int y = random.nextInt(Constants.MAP_SIZE);
-        return new Vector2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
-    }
 
     public SpatialHashMap getSpatialHashMap() {
         return spatialHashMap;
@@ -105,12 +101,14 @@ public class Game {
         map.dispose();
         mapRenderer.dispose();
         enemies.clear();
+        collidableEntities.clear();
         map = new TiledMap();
         mapGenerator.resetMap();
         mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
         player.position.set(mapGenerator.validPlayerPos);
         player.snapToTileCenter();
+        collidableEntities.add(player);
 
         isGameOver = false;
         generateEnemies();
@@ -132,10 +130,14 @@ public class Game {
         return isGameOver;
     }
 
-    public void update(float deltaTime) {
+    public void updateStep() {
         // Update game state based on elapsed time
         //handleChain();
         // ...
+        ++step;
+        for(Enemy enemy : enemies){
+            enemy.move(spatialHashMap);
+        }
     }
 
 //    public void handleChain() {
@@ -161,6 +163,7 @@ public class Game {
         for (Enemy enemy : enemies) {
             enemy.draw(batch);
         }
+
         batch.end();
 
         // Render the wall layer
