@@ -45,6 +45,7 @@ public class Game {
     private int step = 0;
     //private int score;
     private boolean isGameOver;
+    private GameHUD gameHUD;
 
     private GenericHandler firstHandler; // The start of the chain
 
@@ -66,6 +67,7 @@ public class Game {
         map.dispose();
         mapRenderer.dispose();
         mapGenerator.dispose();
+        gameHUD.dispose();
     }
 
     public void initializeGame(){
@@ -86,6 +88,8 @@ public class Game {
 
         inputHandler = new InputHandler(this);
         Gdx.input.setInputProcessor(inputHandler);
+
+        gameHUD = new GameHUD(player);
 
         //TODO: Générer ennemis
         // Generate enemies
@@ -238,5 +242,7 @@ public class Game {
 
         // Render the wall layer
         getMapRenderer().render(new int[]{1});
+
+
     }
 }
