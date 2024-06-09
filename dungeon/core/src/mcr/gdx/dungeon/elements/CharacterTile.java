@@ -8,9 +8,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.DamageNumber;
+import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
-import mcr.gdx.dungeon.characters.handlers.HitHandler;
-import mcr.gdx.dungeon.characters.handlers.TargetHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers.HitHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers.TargetHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,11 @@ import java.util.Set;
 
 public class CharacterTile extends SpriteTile{
 
-    private int healthPoint;
+    protected int healthPoint;
     protected LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private Vector2 facingDirection = Direction.DOWN.getDirection();
-    private final List<DamageNumber> damageNumbers = new ArrayList<>();
     private final GenericHandler requestDamageChain;
+    protected final Game game;
 
     public enum Direction {
         UP(new Vector2(0, 1)),
@@ -46,13 +47,14 @@ public class CharacterTile extends SpriteTile{
         return facingDirection;
     }
 
-    public CharacterTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities){
-        this(position, texture, collidableEntities,10); //By default, the character has 10 hp
+    public CharacterTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game){
+        this(position, texture, collidableEntities, game,10); //By default, the character has 10 hp
     }
-    public CharacterTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, int initialLife) {
+    public CharacterTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game , int initialLife) {
         super(position, texture);
         this.healthPoint = initialLife;
         this.collidableEntities = collidableEntities;
+        this.game = game;
         requestDamageChain = new TargetHandler();
         requestDamageChain.setSuccessor(new HitHandler());
     }
@@ -67,8 +69,8 @@ public class CharacterTile extends SpriteTile{
             healthPoint = 0;
         }
 
-        // Create and add a new damage number
-        damageNumbers.add(new DamageNumber(amount, position));
+        // Create and add a new damage number to the Game class
+        game.addDamageNumber(new DamageNumber(amount, position));
     }
 
     public int getHP() {
@@ -82,38 +84,42 @@ public class CharacterTile extends SpriteTile{
             position.set(newPosition);
             // Updating this entity's position in the spatial hash map
             //spatialHashMap.insert(getBoundingBox());
+        }
+        setFacingDirection(direction);
 
-            // Update facing direction
-            if (direction.x > 0) {
-                facingDirection = Direction.RIGHT.getDirection();
-            } else if (direction.x < 0) {
-                facingDirection = Direction.LEFT.getDirection();
-            } else if (direction.y > 0) {
-                facingDirection = Direction.UP.getDirection();
-            } else {
-                facingDirection = Direction.DOWN.getDirection();
-            }
+    }
+
+    protected void setFacingDirection(Vector2 direction) {
+        // Update facing direction
+        if (direction.x > 0) {
+            facingDirection = Direction.RIGHT.getDirection();
+        } else if (direction.x < 0) {
+            facingDirection = Direction.LEFT.getDirection();
+        } else if (direction.y > 0) {
+            facingDirection = Direction.UP.getDirection();
+        } else {
+            facingDirection = Direction.DOWN.getDirection();
         }
     }
 
-    public void update(float delta) {
-
-        for (int i = damageNumbers.size() - 1; i >= 0; i--) {
-            DamageNumber number = damageNumbers.get(i);
-            number.update(delta);
-            if (number.isExpired()) {
-                damageNumbers.remove(i);
-            }
-        }
-    }
+//    public void update(float delta) {
+//
+//        for (int i = damageNumbers.size() - 1; i >= 0; i--) {
+//            DamageNumber number = damageNumbers.get(i);
+//            number.update(delta);
+//            if (number.isExpired()) {
+//                damageNumbers.remove(i);
+//            }
+//        }
+//    }
 
     @Override
     public void draw(SpriteBatch batch){
         super.draw(batch);
         // Draw damage numbers
-        for (DamageNumber number : damageNumbers) {
-            number.draw(batch);
-        }
+//        for (DamageNumber number : damageNumbers) {
+//            number.draw(batch);
+//        }
     }
 
     private boolean isCollision(Vector2 newPosition, SpatialHashMap spatialHashMap) {
@@ -124,11 +130,18 @@ public class CharacterTile extends SpriteTile{
                 return true;
             }
         }
+
+        //Check for collision with other's position
         for(CharacterTile entity : collidableEntities){
-            if(entity != this && newBoundingBox.overlaps(entity.getBoundingBox())){
+//            if(entity != this && newBoundingBox.overlaps(entity.getBoundingBox())){
+//                return true;
+//            }
+            if(entity != this && newPosition.equals(entity.position)){
                 return true;
             }
+
         }
+
         return false;
 //        Rectangle newBoundingBox = new Rectangle(newPosition.x, newPosition.y, getBoundingBox().width, getBoundingBox().height);
 //        Set<Rectangle> potentialColliders = spatialHashMap.getPotentialColliders(newBoundingBox);
@@ -144,6 +157,10 @@ public class CharacterTile extends SpriteTile{
 //        }
 //        return false;
 
+    }
+
+    public Vector2 getPosition(){
+        return position;
     }
 
     protected void requestDamage(Request request){

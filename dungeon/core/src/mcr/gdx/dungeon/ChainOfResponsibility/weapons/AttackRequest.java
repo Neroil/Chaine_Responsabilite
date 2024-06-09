@@ -1,4 +1,4 @@
-package mcr.gdx.dungeon.weapons;
+package mcr.gdx.dungeon.ChainOfResponsibility.weapons;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.elements.PlayerTile;
@@ -20,6 +20,7 @@ public class AttackRequest implements Request {
     this.weaponCooldown = weapon.getCooldown();
     this.weaponLastAttack = weapon.getLastAttack();
     this.attackType = weapon.getAttackType();
+    this.timeAttack = timeAttack;
   }
 
   public PlayerTile getPlayer() {

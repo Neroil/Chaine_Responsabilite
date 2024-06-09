@@ -1,8 +1,7 @@
-package mcr.gdx.dungeon.weapons.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers;
 
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
 import mcr.gdx.dungeon.elements.items.WeaponTile;
-import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class CostModifierHandler extends AttackHandler{
 

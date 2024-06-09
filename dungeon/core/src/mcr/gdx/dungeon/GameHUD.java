@@ -21,8 +21,6 @@ public class GameHUD {
 
     public void render(SpriteBatch batch) {
 
-
-
         // Draw equipped item
         // spriteBatch.draw(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 20, 110, 32, 32);
         TextureRegion textureRegion;

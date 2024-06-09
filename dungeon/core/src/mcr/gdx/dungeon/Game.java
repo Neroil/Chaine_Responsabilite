@@ -30,6 +30,7 @@ public class Game {
     private LinkedList<EnemyTile> enemies = new LinkedList<EnemyTile>();
     private LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private LinkedList<ItemTile> items = new LinkedList<ItemTile>();
+    private final LinkedList<DamageNumber> damageNumbers = new LinkedList<>();
 
     // Item creators for random item generation
     private static final ItemCreator[] itemCreators = new ItemCreator[] {
@@ -107,11 +108,15 @@ public class Game {
         return inputHandler;
     }
 
+    public void addDamageNumber(DamageNumber damageNumber) {
+        damageNumbers.add(damageNumber);
+    }
+
     private void generateEnemies() {
         for (int i = 0; i < Constants.NUM_ENEMIES; i++) {
             Vector2 position = mapGenerator.generateRandomPositionInRoom();
             TextureRegion enemyTexture = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
-            EnemyTile enemyTile = new EnemyTile(position, enemyTexture, collidableEntities, player);
+            EnemyTile enemyTile = new EnemyTile(position, enemyTexture, collidableEntities, this);
             enemyTile.snapToTileCenter();
             enemies.add(enemyTile);
             collidableEntities.add(enemyTile);
@@ -153,6 +158,7 @@ public class Game {
         mapGenerator.resetMap();
         mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, 5, map);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
+        player.reset();
         player.position.set(mapGenerator.validPlayerPos);
         player.snapToTileCenter();
         collidableEntities.add(player);
@@ -173,6 +179,10 @@ public class Game {
         }
     }
 
+    public int getStep() {
+        return step;
+    }
+
     public void setGameOver(boolean state) {
         isGameOver = state;
     }
@@ -186,11 +196,35 @@ public class Game {
         //handleChain();
         // ...
         ++step;
+
+        //Check if player is dead
+        if(!player.isAlive()){
+            isGameOver = true;
+        }
+
+        if(step % 10 == 0){
+            player.updateRessources();
+        }
+
+        //List of dead ennemies to remove
+        LinkedList<EnemyTile> enemyToRemove = new LinkedList<>();
         //Move enemies
         for(EnemyTile enemyTile : enemies){
+            //Check if enemy is dead
+            if(!enemyTile.isAlive()){
+                enemyToRemove.add(enemyTile);
+                continue;
+            }
             enemyTile.move(spatialHashMap);
         }
 
+        //Remove dead enemies
+        for(EnemyTile enemy : enemyToRemove){
+            enemies.remove(enemy);
+            collidableEntities.remove(enemy);
+        }
+
+        //Check if player is on an item
         ItemTile itemToRemove = null;
         for (ItemTile item : getItems()){
             if (player.position.equals(item.position)) {
@@ -219,11 +253,6 @@ public class Game {
 
     public void render(SpriteBatch batch) {
 
-        // Update damage indicators
-        for(CharacterTile c : collidableEntities){
-            c.update(Gdx.graphics.getDeltaTime());
-        }
-
         // Render the background layer
         getMapRenderer().render(new int[]{0});
 
@@ -241,13 +270,23 @@ public class Game {
         player.draw(batch);
         gameHUD.render(batch);
 
-        batch.end();
+        // Update and draw damage numbers
+        for (int i = damageNumbers.size() - 1; i >= 0; i--) {
+            DamageNumber number = damageNumbers.get(i);
+            number.update(Gdx.graphics.getDeltaTime());
+            if (number.isExpired()) {
+                damageNumbers.remove(i);
+            } else {
+                number.draw(batch);
+            }
+        }
 
-        gameHUD.render();
+        batch.end();
 
         // Render the wall layer
         getMapRenderer().render(new int[]{1});
 
+        gameHUD.render();
 
     }
 }

@@ -14,7 +14,7 @@ public class MagicScepter extends MagicalWeapon {
     private final static TextureRegion TEXTURE = new TextureRegion(Assets.get("wpns_16x16_black_outline.png"), 96, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
     public MagicScepter(Vector2 position) {
-        super(position, TEXTURE, "Magical Sceptre", 1, 400, 10, 30);
+        super(position, TEXTURE, 3, 1, 10, 30);
     }
 
     @Override

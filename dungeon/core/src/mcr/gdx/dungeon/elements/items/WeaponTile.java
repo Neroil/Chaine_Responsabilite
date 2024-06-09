@@ -7,8 +7,6 @@ import mcr.gdx.dungeon.elements.PlayerTile;
 
 import java.sql.Timestamp;
 
-
-
 public abstract class WeaponTile extends ItemTile {
     private final String name;
     private final int damage;

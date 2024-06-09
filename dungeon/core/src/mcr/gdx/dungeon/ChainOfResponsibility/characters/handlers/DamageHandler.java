@@ -1,8 +1,8 @@
-package mcr.gdx.dungeon.characters.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
-import mcr.gdx.dungeon.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
 
 public abstract class DamageHandler extends GenericHandler {
 

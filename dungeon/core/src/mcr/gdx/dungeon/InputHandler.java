@@ -60,12 +60,12 @@ public class InputHandler extends InputAdapter {
             moveDelay = 0.2f;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             this.game.resetGame();
             return;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
             game.getPlayer().attack();
             return;
         }

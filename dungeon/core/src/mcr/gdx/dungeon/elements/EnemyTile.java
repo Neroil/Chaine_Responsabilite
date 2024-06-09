@@ -2,34 +2,61 @@ package mcr.gdx.dungeon.elements;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.HitChanceHandler;
 import mcr.gdx.dungeon.Constants;
+import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
+import mcr.gdx.dungeon.elements.items.WeaponTile;
+import mcr.gdx.dungeon.elements.items.weapons.physical.Fist;
 
 import java.util.LinkedList;
 
 public class EnemyTile extends CharacterTile{
 
-    private final CharacterTile player;
+    private final GenericHandler attackChain;
+    private final WeaponTile weapon;
 
-    public EnemyTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, CharacterTile player) {
-        super(position, texture, collidableEntities);
-        this.player = player;
+    public EnemyTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game) {
+        super(position, texture, collidableEntities, game);
+        weapon = new Fist(new Vector2(0, 0));
+        attackChain = new HitChanceHandler();
     }
 
     public void move(SpatialHashMap spatialHashMap){
-        super.move(calculateDirection(), spatialHashMap);
+        float distanceToPlayer = position.dst(game.getPlayer().position);
+
+        // Calculate tile coordinates of the enemy and the player
+        int enemyTileX = (int)(position.x / Constants.TILE_SIZE);
+        int enemyTileY = (int)(position.y / Constants.TILE_SIZE);
+        int playerTileX = (int)(game.getPlayer().position.x / Constants.TILE_SIZE);
+        int playerTileY = (int)(game.getPlayer().position.y / Constants.TILE_SIZE);
+
+
+        if ((enemyTileX == playerTileX || enemyTileY == playerTileY) && position.dst(game.getPlayer().position) <= weapon.getRange() * Constants.TILE_SIZE) {
+            // Attack the player
+            setFacingDirection(new Vector2(game.getPlayer().position).sub(position));
+            attack();
+        } else {
+            // Move towards the player
+            super.move(calculateDirection(), spatialHashMap);
+        }
     }
 
     private float getRange(){
         return 10 * Constants.TILE_SIZE;
     }
 
+
+
     private Vector2 calculateDirection() {
-        float distanceToPlayer = position.dst(player.position);
+        float distanceToPlayer = position.dst(game.getPlayer().position);
 
         if (distanceToPlayer <= getRange()) {
-            float dx = player.position.x - position.x;
-            float dy = player.position.y - position.y;
+            float dx = game.getPlayer().position.x - position.x;
+            float dy = game.getPlayer().position.y - position.y;
 
             if (Math.abs(dx) > Math.abs(dy)) {
                 // Move horizontally (left or right)

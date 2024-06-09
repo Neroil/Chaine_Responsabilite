@@ -6,24 +6,25 @@ import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
-import mcr.gdx.dungeon.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
 import mcr.gdx.dungeon.elements.items.WeaponTile;
 import mcr.gdx.dungeon.elements.items.weapons.physical.Fist;
-import mcr.gdx.dungeon.weapons.AttackRequest;
-import mcr.gdx.dungeon.weapons.handlers.CooldownHandler;
-import mcr.gdx.dungeon.weapons.handlers.HitChanceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.CooldownHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.HitChanceHandler;
 
 import java.util.LinkedList;
 
 public class PlayerTile extends CharacterTile{
     private final static int MANA_MAX = 180;
-    private final static int MANA_GAIN = 15;
-    private final static int VIGOR_MAX = 60;
-    private final static int VIGOR_GAIN = 30;
+    private final static int MANA_GAIN = 2;
+    private final static int VIGOR_MAX = 80;
+    private final static int VIGOR_GAIN = 5;
+    private final static int HEALTH_MAX = 20;
 
     private int mana;
     private int vigor;
-    private final Game game;
+
 
     private WeaponTile weapon = new Fist(new Vector2(0, 0));
     private final LinkedList<ItemTile> attackItems;
@@ -31,17 +32,28 @@ public class PlayerTile extends CharacterTile{
     private GenericHandler attackChain;
 
     public PlayerTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game){
-        super(position, texture, collidableEntities);
+        super(position, texture, collidableEntities, game, HEALTH_MAX);
         this.mana = MANA_MAX;
         this.vigor = VIGOR_MAX;
-        this.game = game;
         this.attackItems = new LinkedList<>();
         this.defenseItems = new LinkedList<>();
+        createAttackChain();
+    }
+
+    public void reset(){
+        mana = MANA_MAX;
+        vigor = VIGOR_MAX;
+        healthPoint = HEALTH_MAX;
+        weapon = new Fist(new Vector2(0, 0));
+        attackItems.clear();
+        defenseItems.clear();
+        createAttackChain();
     }
 
     public void attack(){
 
-        AttackRequest attack = new AttackRequest(this, weapon);
+        System.out.println("Player attacking!");
+        AttackRequest attack = new AttackRequest(this, weapon, game.getStep());
         if(attackChain.handleRequest(attack)){
             weapon.setLastAttack();
             LinkedList<Vector2> attackedPositions = new LinkedList<>();
@@ -52,6 +64,8 @@ public class PlayerTile extends CharacterTile{
             DamageRequest damageRequest = new DamageRequest(weapon.getDamage(), attackedPositions, collidableEntities);
             requestDamage(damageRequest);
         }
+
+        game.updateStep();
     }
 
     public int getMana() {
@@ -88,6 +102,7 @@ public class PlayerTile extends CharacterTile{
     }
 
     public void updateRessources(){
+        System.out.println("Updating ressources!");
         if(mana + MANA_GAIN <= MANA_MAX){
             mana += MANA_GAIN;
         }
@@ -106,6 +121,15 @@ public class PlayerTile extends CharacterTile{
             chaining = chaining.setSuccessor(i.handler());
         }
         chaining.setSuccessor(weapon.handler()).setSuccessor(new CooldownHandler());
+    }
+
+    private void createAttackChain(){
+        attackChain = new CooldownHandler();
+        GenericHandler chaining = attackChain.setSuccessor(new HitChanceHandler());
+        for(ItemTile i : attackItems){
+            chaining = chaining.setSuccessor(i.handler());
+        }
+        chaining.setSuccessor(weapon.handler());
     }
 
     public void addAttackItem(ItemTile item){

@@ -1,6 +1,6 @@
-package mcr.gdx.dungeon.characters.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers;
 
-import mcr.gdx.dungeon.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
 import mcr.gdx.dungeon.elements.CharacterTile;
 
 public class HitHandler extends DamageHandler {
@@ -8,6 +8,7 @@ public class HitHandler extends DamageHandler {
     @Override
     protected boolean handleDamageRequest(DamageRequest request) {
         for(CharacterTile target : request.getTargets()){
+            System.out.println("Target hit!!");
             target.reduceLife(request.getDamage());
         }
         return invokeSuccessor(request);
