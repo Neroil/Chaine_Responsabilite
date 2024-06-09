@@ -249,6 +249,12 @@ public class Game {
             item.draw(batch);
 
         player.draw(batch);
+
+        batch.end();
+        // Render the wall layer
+        getMapRenderer().render(new int[]{1});
+
+        batch.begin();
         // Update and draw damage numbers
         for (int i = damageNumbers.size() - 1; i >= 0; i--) {
             DamageNumber number = damageNumbers.get(i);
@@ -260,8 +266,6 @@ public class Game {
                 number.draw(batch);
         }
         batch.end();
-        // Render the wall layer
-        getMapRenderer().render(new int[]{1});
     }
 
     public boolean isGameWon() {

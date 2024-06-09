@@ -137,28 +137,62 @@ public class MapGenerator implements Disposable {
         int w2 = (int) room2.width;
         int h2 = (int) room2.height;
 
-        // Determine the closest points between the two rooms
+        // Get the center points of the rooms
         int cx1 = x1 + w1 / 2;
         int cy1 = y1 + h1 / 2;
         int cx2 = x2 + w2 / 2;
         int cy2 = y2 + h2 / 2;
 
-        // Carve the first segment
-        boolean isHorizontalFirst;
-        if (cx1 < cx2) {
-            carveHorizontalCorridor(layer, cx1, cy1, x2, cy1);
-            isHorizontalFirst = true;
-        } else {
-            carveVerticalCorridor(layer, cx1, cy1, cx1, cy2);
-            isHorizontalFirst = false;
+        // Generate a random corridor path
+        List<Vector2> path = generateCorridorPath(new Vector2(cx1, cy1), new Vector2(cx2, cy2));
+
+        // Carve the corridor along the path
+        for (int i = 0; i < path.size() - 1; i++) {
+            Vector2 start = path.get(i);
+            Vector2 end = path.get(i + 1);
+            carveCorridor(layer, (int) start.x, (int) start.y, (int) end.x, (int) end.y);
+        }
+    }
+
+    private List<Vector2> generateCorridorPath(Vector2 start, Vector2 end) {
+        List<Vector2> path = new ArrayList<>();
+        path.add(start);
+
+        Vector2 current = new Vector2(start);
+        Vector2 previous = null;
+
+        while (!current.equals(end)) {
+            Vector2 direction = getRandomDirection(end, current, previous);
+            previous = current;
+            current.add(direction);
+            path.add(new Vector2(current));
         }
 
-        // Carve the second segment (L-shape)
-        if (isHorizontalFirst)
-            carveVerticalCorridor(layer, x2, cy1, x2, cy2);
-        else
-            carveHorizontalCorridor(layer, x1, cy2, cx2, cy2);
+        return path;
+    }
 
+    private Vector2 getRandomDirection(Vector2 end, Vector2 current, Vector2 previous) {
+        List<Vector2> directions = new ArrayList<>();
+        Vector2 toEnd = new Vector2(end.x - current.x, end.y - current.y);
+
+        if (toEnd.x > 0 && (previous == null || !previous.equals(new Vector2(current.x - 1, current.y)))) {
+            directions.add(new Vector2(1, 0));
+        }
+        if (toEnd.x < 0 && (previous == null || !previous.equals(new Vector2(current.x + 1, current.y)))) {
+            directions.add(new Vector2(-1, 0));
+        }
+        if (toEnd.y > 0 && (previous == null || !previous.equals(new Vector2(current.x, current.y - 1)))) {
+            directions.add(new Vector2(0, 1));
+        }
+        if (toEnd.y < 0 && (previous == null || !previous.equals(new Vector2(current.x, current.y + 1)))) {
+            directions.add(new Vector2(0, -1));
+        }
+
+        if (directions.isEmpty()) {
+            return toEnd.nor(); // If we're stuck, move directly towards the end point
+        }
+
+        return directions.get(random.nextInt(directions.size()));
     }
 
     private void carveCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
@@ -176,14 +210,6 @@ public class MapGenerator implements Disposable {
         int corridorHeight = endY - startY + 1;
         Rectangle corridor = new Rectangle(startX, startY, corridorWidth, corridorHeight);
         corridors.add(corridor);
-    }
-
-    private void carveHorizontalCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
-        carveCorridor(layer, x1, y1, x2, y1);
-    }
-
-    private void carveVerticalCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
-        carveCorridor(layer, x1, y1, x1, y2);
     }
 
     private void setWallTiles(TiledMapTileLayer layer) {

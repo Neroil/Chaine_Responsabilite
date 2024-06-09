@@ -30,7 +30,7 @@ public class InputHandler extends InputAdapter {
         int horizontalInput = 0;
         int verticalInput = 0;
 
-        if (!game.isGameWon() || !game.isGameOver()) {
+        if (!game.isGameWon() && !game.isGameOver()) {
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 horizontalInput = -1;
                 movePlayer = true;

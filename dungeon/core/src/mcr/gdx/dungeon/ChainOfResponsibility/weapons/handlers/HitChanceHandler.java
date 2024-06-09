@@ -8,7 +8,6 @@ public class HitChanceHandler extends AttackHandler {
     private static final int HIT_CHANCE = 80;
     private static final Random random = new Random();
 
-
     @Override
     protected boolean handleAttackRequest(AttackRequest request) {
         int chance = random.nextInt(0, 101);
@@ -21,5 +20,4 @@ public class HitChanceHandler extends AttackHandler {
             return false;
         }
     }
-
 }
