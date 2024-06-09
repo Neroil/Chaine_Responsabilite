@@ -40,6 +40,10 @@ public class PlayerTile extends CharacterTile{
         createAttackChain();
     }
 
+    public void exitLevel(){
+        game.exitLevel();
+    }
+
     public void reset(){
         mana = MANA_MAX;
         vigor = VIGOR_MAX;

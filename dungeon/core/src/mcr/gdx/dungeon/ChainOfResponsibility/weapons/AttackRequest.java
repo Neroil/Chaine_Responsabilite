@@ -38,7 +38,7 @@ public class AttackRequest implements Request {
 
   public void modifyWeaponCost(double factor) { weaponCost = (int)(weaponCost * factor); }
 
-  public void modifyWeaponDamage(double factor) { weaponDamage *= (int)(weaponDamage * factor); }
+  public void modifyWeaponDamage(double factor) { weaponDamage = (int)(weaponDamage * factor); }
 
   public WeaponTile.AttackType getAttackType() { return attackType; }
 

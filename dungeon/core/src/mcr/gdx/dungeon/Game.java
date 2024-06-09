@@ -1,6 +1,7 @@
 package mcr.gdx.dungeon;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -220,7 +221,7 @@ public class Game {
     public boolean isGameOver() {
         return isGameOver;
     }
-
+    
     public void updateStep() {
         // Update game state based on elapsed time
         //handleChain();
