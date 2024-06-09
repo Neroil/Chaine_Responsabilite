@@ -27,9 +27,9 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 
 public class Game {
-    private LinkedList<EnemyTile> enemies = new LinkedList<EnemyTile>();
-    private LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
-    private LinkedList<ItemTile> items = new LinkedList<ItemTile>();
+    private final LinkedList<EnemyTile> enemies = new LinkedList<>();
+    private final LinkedList<CharacterTile> collidableEntities = new LinkedList<>();
+    private final LinkedList<ItemTile> items = new LinkedList<>();
     private final LinkedList<DamageNumber> damageNumbers = new LinkedList<>();
 
     // Item creators for random item generation
@@ -76,7 +76,6 @@ public class Game {
         map = new TiledMap();
         mapGenerator.generateProceduralMap(Constants.MAP_SIZE, Constants.MAP_SIZE, Constants.NUM_ROOMS, map);
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-
 
         TextureRegion playerRegion = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Character_2.png"), 64, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
         player = new PlayerTile(mapGenerator.validPlayerPos, playerRegion, collidableEntities, this);
@@ -182,9 +181,9 @@ public class Game {
 
     private void initializeCollisionDetection() {
         spatialHashMap.clear();
-        for (Rectangle wallTile : mapGenerator.getWallTiles((TiledMapTileLayer)map.getLayers().get("walls"))) {
+
+        for (Rectangle wallTile : mapGenerator.getWallTiles((TiledMapTileLayer) map.getLayers().get("walls")))
             spatialHashMap.insert(wallTile);
-        }
     }
 
     public int getStep() {
@@ -200,13 +199,11 @@ public class Game {
         ++step;
 
         //Check if player is dead
-        if(!player.isAlive()){
+        if (!player.isAlive())
             isGameOver = true;
-        }
 
-        if(step % 10 == 0){
+        if (step % 10 == 0)
             player.updateRessources();
-        }
 
         //List of dead ennemies to remove
         LinkedList<EnemyTile> enemyToRemove = new LinkedList<>();
@@ -228,30 +225,27 @@ public class Game {
 
         //Check if player is on an item
         ItemTile itemToRemove = null;
-        for (ItemTile item : getItems()){
+        for (ItemTile item : getItems())
             if (player.position.equals(item.position)) {
                 player.pickUpItem(item);
                 itemToRemove = item;
                 break;
             }
-        }
         items.remove(itemToRemove);
     }
 
 
     public void render(SpriteBatch batch) {
-
         // Render the background layer
         getMapRenderer().render(new int[]{0});
 
         // Draw the player
         batch.begin();
 
-        for (EnemyTile enemyTile : enemies) {
+        for (EnemyTile enemyTile : enemies)
             enemyTile.draw(batch);
-        }
 
-        for (ItemTile item : items) {
+        for (ItemTile item : items)
             item.draw(batch);
 
         player.draw(batch);
@@ -259,11 +253,11 @@ public class Game {
         for (int i = damageNumbers.size() - 1; i >= 0; i--) {
             DamageNumber number = damageNumbers.get(i);
             number.update(Gdx.graphics.getDeltaTime());
-            if (number.isExpired()) {
+
+            if (number.isExpired())
                 damageNumbers.remove(i);
-            } else {
+            else
                 number.draw(batch);
-            }
         }
         batch.end();
         // Render the wall layer

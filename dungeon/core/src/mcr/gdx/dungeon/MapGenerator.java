@@ -91,11 +91,9 @@ public class MapGenerator implements Disposable {
 
 
     private void carveRoom(TiledMapTileLayer layer, Rectangle room) {
-        for (int x = (int) room.x; x < room.x + room.width; x++) {
-            for (int y = (int) room.y; y < room.y + room.height; y++) {
+        for (int x = (int) room.x; x < room.x + room.width; x++)
+            for (int y = (int) room.y; y < room.y + room.height; y++)
                 layer.setCell(x, y, null);
-            }
-        }
     }
 
     private void connectRooms(TiledMapTileLayer layer) {
@@ -112,9 +110,8 @@ public class MapGenerator implements Disposable {
 
 
     public Vector2 generateRandomPositionInRoom() {
-        if (rooms.isEmpty()) {
+        if (rooms.isEmpty())
             throw new IllegalStateException("No rooms have been generated yet.");
-        }
 
         Rectangle randomRoom = rooms.random(); // Choose a random room from the list
         int x = (int) (randomRoom.x + random.nextInt((int) randomRoom.width));
@@ -157,11 +154,11 @@ public class MapGenerator implements Disposable {
         }
 
         // Carve the second segment (L-shape)
-        if (isHorizontalFirst) {
+        if (isHorizontalFirst)
             carveVerticalCorridor(layer, x2, cy1, x2, cy2);
-        } else {
+        else
             carveHorizontalCorridor(layer, x1, cy2, cx2, cy2);
-        }
+
     }
 
     private void carveCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
@@ -170,13 +167,10 @@ public class MapGenerator implements Disposable {
         int startY = Math.min(y1, y2);
         int endY = Math.max(y1, y2);
 
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-                if (!isCellInsideAnyRoom(x, y)) {
+        for (int x = startX; x <= endX; x++)
+            for (int y = startY; y <= endY; y++)
+                if (!isCellInsideAnyRoom(x, y))
                     layer.setCell(x, y, null);
-                }
-            }
-        }
 
         int corridorWidth = endX - startX + 1;
         int corridorHeight = endY - startY + 1;
@@ -193,13 +187,10 @@ public class MapGenerator implements Disposable {
     }
 
     private void setWallTiles(TiledMapTileLayer layer) {
-        for (int x = 0; x < layer.getWidth(); x++) {
-            for (int y = 0; y < layer.getHeight(); y++) {
-                if (!isCellInsideAnyRoom(x, y)) {
+        for (int x = 0; x < layer.getWidth(); x++)
+            for (int y = 0; y < layer.getHeight(); y++)
+                if (!isCellInsideAnyRoom(x, y))
                     setWallTileBasedOnDirection(layer, x, y);
-                }
-            }
-        }
     }
 
     private void setWallTileBasedOnDirection(TiledMapTileLayer layer, int x, int y) {
@@ -275,7 +266,7 @@ public class MapGenerator implements Disposable {
     }
 
     public List<Rectangle> getWallTiles(TiledMapTileLayer layer) {
-        List<Rectangle> wallTiles = new ArrayList<Rectangle>();
+        List<Rectangle> wallTiles = new ArrayList<>();
         for (int x = 0; x < layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
                 if (layer.getCell(x, y) != null) {
