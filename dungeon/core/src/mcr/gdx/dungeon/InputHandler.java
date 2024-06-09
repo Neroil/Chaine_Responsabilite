@@ -65,6 +65,11 @@ public class InputHandler extends InputAdapter {
             return;
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
+            game.getPlayer().attack();
+            return;
+        }
+
         newPosition.x += horizontalInput * Constants.TILE_SIZE;
         newPosition.y += verticalInput * Constants.TILE_SIZE;
 

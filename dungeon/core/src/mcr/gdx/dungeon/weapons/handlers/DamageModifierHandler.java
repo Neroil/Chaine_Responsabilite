@@ -7,7 +7,6 @@ import mcr.gdx.dungeon.weapons.AttackRequest;
 public class DamageModifierHandler extends AttackHandler{
     private final double modifier;
 
-
     public DamageModifierHandler(double modifier){
         this.modifier = modifier;
     }

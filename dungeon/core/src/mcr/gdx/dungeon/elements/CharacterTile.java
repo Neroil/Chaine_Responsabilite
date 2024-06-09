@@ -4,10 +4,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.DamageNumber;
 import mcr.gdx.dungeon.SpatialHashMap;
+import mcr.gdx.dungeon.characters.handlers.HitHandler;
+import mcr.gdx.dungeon.characters.handlers.TargetHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,7 @@ public class CharacterTile extends SpriteTile{
     protected LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private Vector2 facingDirection = Direction.DOWN.getDirection();
     private final List<DamageNumber> damageNumbers = new ArrayList<>();
-
+    private final GenericHandler requestDamageChain;
 
     public enum Direction {
         UP(new Vector2(0, 1)),
@@ -50,6 +53,8 @@ public class CharacterTile extends SpriteTile{
         super(position, texture);
         this.healthPoint = initialLife;
         this.collidableEntities = collidableEntities;
+        requestDamageChain = new TargetHandler();
+        requestDamageChain.setSuccessor(new HitHandler());
     }
 
     public boolean isAlive() {
@@ -141,8 +146,7 @@ public class CharacterTile extends SpriteTile{
 
     }
 
-    public void hit(Request req){
-        //damagedChain(req);
+    protected void requestDamage(Request request){
+        requestDamageChain.handleRequest(request);
     }
-
 }

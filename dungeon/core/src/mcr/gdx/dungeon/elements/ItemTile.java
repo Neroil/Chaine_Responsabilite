@@ -9,9 +9,7 @@ public abstract class ItemTile extends SpriteTile{
         super(position, texture);
     }
 
-    public void pickUp(PlayerTile player){
-        player.addItem(this);
-    }
+    public abstract void pickUp(PlayerTile player);
 
     public abstract GenericHandler handler();
 }

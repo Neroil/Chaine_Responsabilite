@@ -5,6 +5,7 @@ abstract public class GenericHandler {
   private GenericHandler successor;
 
   public GenericHandler setSuccessor(GenericHandler successor) {
+    if(successor == null) return this;
     this.successor = successor;
     return successor;
   }

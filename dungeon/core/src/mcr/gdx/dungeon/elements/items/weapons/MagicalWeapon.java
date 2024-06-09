@@ -1,0 +1,17 @@
+package mcr.gdx.dungeon.elements.items.weapons;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import mcr.gdx.dungeon.elements.items.WeaponTile;
+
+public abstract class MagicalWeapon extends WeaponTile{
+
+    public MagicalWeapon(Vector2 position, TextureRegion texture, String name, int damage, int cooldown, int range, int cost){
+        super(position, texture, name, damage, cooldown, range, cost);
+    }
+
+    @Override
+    public AttackType getAttackType(){
+        return AttackType.MAGICAL;
+    }
+}

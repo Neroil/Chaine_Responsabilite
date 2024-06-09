@@ -6,7 +6,7 @@ import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class MagicalRessourceHandler extends RessourceHandler {
 
-
+  @Override
   protected boolean checkResources(AttackRequest request) {
     int mana = request.getPlayer().getMana();
     int cost = request.getWeaponCost();
@@ -14,6 +14,7 @@ public class MagicalRessourceHandler extends RessourceHandler {
     return mana >= cost;
   }
 
+  @Override
   protected void updateResources(AttackRequest request) {
     PlayerTile player = request.getPlayer();
     int cost = request.getWeaponCost();

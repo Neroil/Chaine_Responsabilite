@@ -11,12 +11,17 @@ import com.badlogic.gdx.math.Vector2;
 import mcr.gdx.dungeon.elements.CharacterTile;
 
 import java.util.LinkedList;
-import java.util.ArrayList;
+
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.elements.EnemyTile;
 import mcr.gdx.dungeon.elements.ItemTile;
 import mcr.gdx.dungeon.elements.PlayerTile;
-import mcr.gdx.dungeon.elements.items.*;
+import mcr.gdx.dungeon.elements.items.attacks.DamageRing;
+import mcr.gdx.dungeon.elements.items.attacks.ManaRing;
+import mcr.gdx.dungeon.elements.items.attacks.VigorRing;
+import mcr.gdx.dungeon.elements.items.weapons.physical.Club;
+import mcr.gdx.dungeon.elements.items.weapons.magical.MagicScepter;
+import mcr.gdx.dungeon.elements.items.weapons.physical.Sword;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -59,7 +64,7 @@ public class Game {
         return mapRenderer;
     }
 
-    CharacterTile getPlayer() {
+    PlayerTile getPlayer() {
         return player;
     }
 

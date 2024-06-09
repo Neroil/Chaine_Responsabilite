@@ -2,21 +2,18 @@ package mcr.gdx.dungeon.elements;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.tools.javac.jvm.Gen;
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
 import mcr.gdx.dungeon.characters.DamageRequest;
-import mcr.gdx.dungeon.elements.items.Fist;
+import mcr.gdx.dungeon.elements.items.WeaponTile;
+import mcr.gdx.dungeon.elements.items.weapons.physical.Fist;
 import mcr.gdx.dungeon.weapons.AttackRequest;
-import mcr.gdx.dungeon.weapons.handlers.AttackHandler;
 import mcr.gdx.dungeon.weapons.handlers.CooldownHandler;
 import mcr.gdx.dungeon.weapons.handlers.HitChanceHandler;
 
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 public class PlayerTile extends CharacterTile{
     private final static int MANA_MAX = 180;
@@ -29,7 +26,8 @@ public class PlayerTile extends CharacterTile{
     private final Game game;
 
     private WeaponTile weapon = new Fist(new Vector2(0, 0));
-    private final LinkedList<ItemTile> items;
+    private final LinkedList<ItemTile> attackItems;
+    private final LinkedList<ItemTile> defenseItems;
     private GenericHandler attackChain;
 
     public PlayerTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game){
@@ -37,27 +35,22 @@ public class PlayerTile extends CharacterTile{
         this.mana = MANA_MAX;
         this.vigor = VIGOR_MAX;
         this.game = game;
-        this.items = new LinkedList<>();
+        this.attackItems = new LinkedList<>();
+        this.defenseItems = new LinkedList<>();
     }
 
     public void attack(){
 
         AttackRequest attack = new AttackRequest(this, weapon);
         if(attackChain.handleRequest(attack)){
-            LinkedList<CharacterTile> targets = new LinkedList<>();
+            weapon.setLastAttack();
+            LinkedList<Vector2> attackedPositions = new LinkedList<>();
             for(int i = 1; i <= weapon.getRange(); ++i){
                 Vector2 attackedPos = new Vector2(position);
-                attackedPos.mulAdd(getFacingDirection(), i * Constants.TILE_SIZE);
-                for(CharacterTile entity : collidableEntities){
-                    if(entity.position.equals(attackedPos)){
-                        targets.add(entity);
-                    }
-                }
+                attackedPositions.add(attackedPos.mulAdd(getFacingDirection(), i * Constants.TILE_SIZE));
             }
-            for(CharacterTile target : targets){
-                //DamageRequest damage = new DamageRequest();
-                //target.hit(damage);
-            }
+            DamageRequest damageRequest = new DamageRequest(weapon.getDamage(), attackedPositions, collidableEntities);
+            requestDamage(damageRequest);
         }
     }
 
@@ -107,17 +100,22 @@ public class PlayerTile extends CharacterTile{
         item.pickUp(this);
         // Reset the chain of attack when a new item is picked up
         attackChain = new HitChanceHandler();
-        attackChain.setSuccessor(new HitChanceHandler());
-        for(ItemTile i : items){
+        GenericHandler chaining = attackChain;
+        for(ItemTile i : attackItems){
             //TODO: trouver comment faire pour différencier les items (manaring et vigorring modifient les deux le cout sans distinction)
-            attackChain.setSuccessor(i.handler());
+            chaining = chaining.setSuccessor(i.handler());
         }
-        attackChain.setSuccessor(weapon.handler()).setSuccessor(new CooldownHandler());
+        chaining.setSuccessor(weapon.handler()).setSuccessor(new CooldownHandler());
     }
 
-    public void addItem(ItemTile item){
+    public void addAttackItem(ItemTile item){
         System.out.println("Picked up item!");
-        this.items.add(item);
+        this.attackItems.add(item);
+    }
+
+    public void addDefenseItem(ItemTile item){
+        System.out.println("Picked up item!");
+        this.defenseItems.add(item);
     }
 
     public void setWeapon(WeaponTile weapon){
@@ -129,9 +127,9 @@ public class PlayerTile extends CharacterTile{
         return weapon;
     }
 
-    public List<ItemTile> getItems(){
-        return Collections.unmodifiableList(items);
-    }
+//    public List<ItemTile> getItems(){
+//        return Collections.unmodifiableList(items);
+//    }
 
     @Override
     public void move(Vector2 direction, SpatialHashMap spatialHashMap) {

@@ -2,7 +2,7 @@ package mcr.gdx.dungeon.weapons;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.elements.PlayerTile;
-import mcr.gdx.dungeon.elements.WeaponTile;
+import mcr.gdx.dungeon.elements.items.WeaponTile;
 
 public class AttackRequest implements Request {
 
@@ -11,6 +11,7 @@ public class AttackRequest implements Request {
   private int weaponDamage;
   private final int weaponCooldown;
   private final long weaponLastAttack;
+  private final WeaponTile.AttackType attackType;
 
   public AttackRequest(PlayerTile player, WeaponTile weapon) {
     this.player = player;
@@ -18,6 +19,7 @@ public class AttackRequest implements Request {
     this.weaponDamage = weapon.getDamage();
     this.weaponCooldown = weapon.getCooldown();
     this.weaponLastAttack = weapon.getLastAttack();
+    this.attackType = weapon.getAttackType();
   }
 
   public PlayerTile getPlayer() {
@@ -36,4 +38,5 @@ public class AttackRequest implements Request {
 
   public void modifyWeaponDamage(double factor) { weaponDamage *= (int)(weaponDamage * factor); }
 
+  public WeaponTile.AttackType getAttackType() { return attackType; }
 }

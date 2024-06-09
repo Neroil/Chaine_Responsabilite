@@ -2,14 +2,15 @@ package mcr.gdx.dungeon.characters.handlers;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
+import mcr.gdx.dungeon.characters.DamageRequest;
 
-public class DamageHandler extends GenericHandler {
+public abstract class DamageHandler extends GenericHandler {
 
 
     @Override
     public boolean handleRequest(Request request) {
-        return false;
+        return handleDamageRequest((DamageRequest) request);
     }
 
-
+    protected abstract boolean handleDamageRequest(DamageRequest request);
 }

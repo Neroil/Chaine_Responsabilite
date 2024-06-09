@@ -1,12 +1,15 @@
-package mcr.gdx.dungeon.elements;
+package mcr.gdx.dungeon.elements.items;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.elements.ItemTile;
+import mcr.gdx.dungeon.elements.PlayerTile;
 
 import java.sql.Timestamp;
 
-public abstract class WeaponTile extends ItemTile{
+
+
+public abstract class WeaponTile extends ItemTile {
     private final String name;
     private final int damage;
     private final int cooldown;
@@ -14,6 +17,10 @@ public abstract class WeaponTile extends ItemTile{
     private final int range;
     private final int cost;
 
+    public enum AttackType {
+        PHYSICAL,
+        MAGICAL
+    }
 
     public WeaponTile(Vector2 position, TextureRegion texture, String name, int damage, int cooldown, int range, int cost){
         super(position, texture);
@@ -46,4 +53,6 @@ public abstract class WeaponTile extends ItemTile{
     public int getRange() { return range; }
 
     public int getCost() { return cost; }
+
+    public abstract AttackType getAttackType();
 }
