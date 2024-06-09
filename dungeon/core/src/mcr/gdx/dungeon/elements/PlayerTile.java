@@ -17,9 +17,9 @@ import java.util.LinkedList;
 
 public class PlayerTile extends CharacterTile{
     private final static int MANA_MAX = 180;
-    private final static int MANA_GAIN = 2;
+    private final static int MANA_GAIN = 10;
     private final static int VIGOR_MAX = 80;
-    private final static int VIGOR_GAIN = 5;
+    private final static int VIGOR_GAIN = 20;
     private final static int HEALTH_MAX = 20;
 
     private int mana;

@@ -14,14 +14,12 @@ import static mcr.gdx.dungeon.Constants.font;
 
 public class GameHUD {
     private final ShapeRenderer shapeRenderer;
-    private final SpriteBatch spriteBatch;
     private final TextureRegion defaultTexture;
     private PlayerTile player;
     SpriteBatch HUDbatch = new SpriteBatch();
 
     public GameHUD(PlayerTile player) {
         shapeRenderer = new ShapeRenderer();
-        spriteBatch = new SpriteBatch();
         this.player = player;
         defaultTexture = new TextureRegion(Assets.get("wpns_16x16_black_outline.png"), 128, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
     }
