@@ -17,5 +17,6 @@ public class Constants {
     public static final int MAP_SIZE = 100;
     public static final int NUM_ENEMIES = 10;
     public static final int NUM_ITEMS = 10;
-    public static final int VIGOR_RING_MODIFIER = 2;
+    public static final double VIGOR_RING_MODIFIER = 0.5;
+    public static final double MANA_RING_MODIFIER = 0.5;
 }

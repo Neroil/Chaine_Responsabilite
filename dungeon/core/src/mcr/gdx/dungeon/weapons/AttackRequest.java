@@ -32,8 +32,8 @@ public class AttackRequest implements Request {
 
   public long getWeaponLastAttack() { return weaponLastAttack; }
 
-  public void modifyWeaponCost(int factor) { weaponCost *= factor; }
+  public void modifyWeaponCost(double factor) { weaponCost = (int)(weaponCost * factor); }
 
-  public void modifyWeaponDamage(int factor) { weaponDamage *= factor; }
+  public void modifyWeaponDamage(double factor) { weaponDamage *= (int)(weaponDamage * factor); }
 
 }

@@ -30,8 +30,6 @@ public class PlayerTile extends CharacterTile{
 
     private WeaponTile weapon = new Fist(new Vector2(0, 0));
     private final LinkedList<ItemTile> items;
-    private GenericHandler weaponAttackChain;
-    private GenericHandler itemAttackChain;
     private GenericHandler attackChain;
 
     public PlayerTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game){
@@ -43,7 +41,6 @@ public class PlayerTile extends CharacterTile{
     }
 
     public void attack(){
-        //GenericHandler attackChain = itemAttackChain.setSuccessor(weapon.chainOfAttack());
 
         AttackRequest attack = new AttackRequest(this, weapon);
         if(attackChain.handleRequest(attack)){
@@ -112,6 +109,7 @@ public class PlayerTile extends CharacterTile{
         attackChain = new HitChanceHandler();
         attackChain.setSuccessor(new HitChanceHandler());
         for(ItemTile i : items){
+            //TODO: trouver comment faire pour différencier les items (manaring et vigorring modifient les deux le cout sans distinction)
             attackChain.setSuccessor(i.handler());
         }
         attackChain.setSuccessor(weapon.handler()).setSuccessor(new CooldownHandler());

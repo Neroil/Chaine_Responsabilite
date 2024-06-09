@@ -5,10 +5,10 @@ import mcr.gdx.dungeon.characters.DamageRequest;
 import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class DamageModifierHandler extends AttackHandler{
-    private final int modifier;
+    private final double modifier;
 
 
-    public DamageModifierHandler(int modifier){
+    public DamageModifierHandler(double modifier){
         this.modifier = modifier;
     }
 

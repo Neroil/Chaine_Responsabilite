@@ -20,7 +20,7 @@ public class CharacterTile extends SpriteTile{
     private int healthPoint;
     protected LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private Vector2 facingDirection = Direction.DOWN.getDirection();
-    private List<DamageNumber> damageNumbers = new ArrayList<>();
+    private final List<DamageNumber> damageNumbers = new ArrayList<>();
 
 
     public enum Direction {

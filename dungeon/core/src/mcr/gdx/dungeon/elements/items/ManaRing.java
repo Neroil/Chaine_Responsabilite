@@ -19,6 +19,6 @@ public class ManaRing extends ItemTile {
 
     @Override
     public GenericHandler handler() {
-        return new CostModifierHandler(3);
+        return new CostModifierHandler(Constants.MANA_RING_MODIFIER);
     }
 }

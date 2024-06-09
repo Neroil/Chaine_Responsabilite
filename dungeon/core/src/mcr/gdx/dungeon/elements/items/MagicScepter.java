@@ -18,4 +18,5 @@ public class MagicScepter extends WeaponTile {
 
     @Override
     public GenericHandler handler() { return new MagicalRessourceHandler(); }
+
 }

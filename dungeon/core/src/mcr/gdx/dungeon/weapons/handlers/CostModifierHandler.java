@@ -5,9 +5,9 @@ import mcr.gdx.dungeon.weapons.AttackRequest;
 
 public class CostModifierHandler extends AttackHandler{
 
-    private final int modifier;
+    private final double modifier;
 
-    public CostModifierHandler(int modifier){
+    public CostModifierHandler(double modifier){
         this.modifier = modifier;
     }
 
