@@ -17,6 +17,7 @@ public class HitChanceHandler extends AttackHandler{
         if(chance <= HIT_CHANCE){
             return invokeSuccessor(request);
         }else {
+            System.out.println("The attack missed!");
             return false;
         }
     }

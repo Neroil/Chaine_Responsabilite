@@ -18,6 +18,7 @@ public class CostModifierHandler extends AttackHandler{
     @Override
     protected boolean handleAttackRequest(AttackRequest request) {
         if(request.getAttackType() == appliedType){
+            System.out.println("Cost of attack lowered!");
             request.modifyWeaponCost(modifier);
         }
         return invokeSuccessor(request);

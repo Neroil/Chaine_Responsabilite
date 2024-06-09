@@ -8,10 +8,9 @@ import mcr.gdx.dungeon.elements.PlayerTile;
 import java.sql.Timestamp;
 
 public abstract class WeaponTile extends ItemTile {
-    private final String name;
     private final int damage;
     private final int cooldown;
-    private Timestamp lastAttack;
+    private int lastAttack;
     private final int range;
     private final int cost;
 
@@ -20,13 +19,13 @@ public abstract class WeaponTile extends ItemTile {
         MAGICAL
     }
 
-    public WeaponTile(Vector2 position, TextureRegion texture, String name, int damage, int cooldown, int range, int cost){
+    public WeaponTile(Vector2 position, TextureRegion texture, int damage, int cooldown, int range, int cost){
         super(position, texture);
-        this.name = name;
         this.damage = damage;
         this.cooldown = cooldown;
         this.range = range;
         this.cost = cost;
+        this.lastAttack = -1;
     }
 
     @Override
@@ -34,18 +33,16 @@ public abstract class WeaponTile extends ItemTile {
         player.setWeapon(this);
     }
 
-    public String getName() { return name; }
-
     public int getDamage() { return damage; }
 
     public int getCooldown() { return cooldown; }
 
-    public void setLastAttack() {
-        lastAttack = new Timestamp(System.currentTimeMillis());
+    public void setLastAttack(int step) {
+        lastAttack = step;
     }
 
-    public long getLastAttack() {
-        return lastAttack == null ? -1 : lastAttack.getTime();
+    public int getLastAttack() {
+        return lastAttack;
     }
 
     public int getRange() { return range; }

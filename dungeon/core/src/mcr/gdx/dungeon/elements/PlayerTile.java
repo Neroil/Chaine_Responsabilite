@@ -55,13 +55,13 @@ public class PlayerTile extends CharacterTile{
         System.out.println("Player attacking!");
         AttackRequest attack = new AttackRequest(this, weapon, game.getStep());
         if(attackChain.handleRequest(attack)){
-            weapon.setLastAttack();
+            weapon.setLastAttack(game.getStep());
             LinkedList<Vector2> attackedPositions = new LinkedList<>();
             for(int i = 1; i <= weapon.getRange(); ++i){
                 Vector2 attackedPos = new Vector2(position);
                 attackedPositions.add(attackedPos.mulAdd(getFacingDirection(), i * Constants.TILE_SIZE));
             }
-            DamageRequest damageRequest = new DamageRequest(weapon.getDamage(), attackedPositions, collidableEntities);
+            DamageRequest damageRequest = new DamageRequest(attack.getWeaponDamage(), attackedPositions, collidableEntities);
             requestDamage(damageRequest);
         }
 
@@ -114,13 +114,7 @@ public class PlayerTile extends CharacterTile{
     public void pickUpItem(ItemTile item){
         item.pickUp(this);
         // Reset the chain of attack when a new item is picked up
-        attackChain = new HitChanceHandler();
-        GenericHandler chaining = attackChain;
-        for(ItemTile i : attackItems){
-            //TODO: trouver comment faire pour différencier les items (manaring et vigorring modifient les deux le cout sans distinction)
-            chaining = chaining.setSuccessor(i.handler());
-        }
-        chaining.setSuccessor(weapon.handler()).setSuccessor(new CooldownHandler());
+        createAttackChain();
     }
 
     private void createAttackChain(){
@@ -150,10 +144,6 @@ public class PlayerTile extends CharacterTile{
     public WeaponTile getWeapon(){
         return weapon;
     }
-
-//    public List<ItemTile> getItems(){
-//        return Collections.unmodifiableList(items);
-//    }
 
     @Override
     public void move(Vector2 direction, SpatialHashMap spatialHashMap) {

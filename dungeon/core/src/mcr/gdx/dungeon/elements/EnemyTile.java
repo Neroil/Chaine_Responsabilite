@@ -25,6 +25,16 @@ public class EnemyTile extends CharacterTile{
         attackChain = new HitChanceHandler();
     }
 
+    public void attack(){
+        AttackRequest attack = new AttackRequest(null, weapon, -1);
+        if(attackChain.handleRequest(attack)){
+            LinkedList<Vector2> attackedPos = new LinkedList<>();
+            attackedPos.add(new Vector2(position).mulAdd(getFacingDirection(), weapon.getRange() * Constants.TILE_SIZE));
+            DamageRequest damageRequest = new DamageRequest(weapon.getDamage(), attackedPos, collidableEntities);
+            requestDamage(damageRequest);
+        }
+    }
+
     public void move(SpatialHashMap spatialHashMap){
         float distanceToPlayer = position.dst(game.getPlayer().position);
 

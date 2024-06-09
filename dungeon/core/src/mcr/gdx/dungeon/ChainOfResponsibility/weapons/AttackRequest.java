@@ -12,8 +12,9 @@ public class AttackRequest implements Request {
   private final int weaponCooldown;
   private final long weaponLastAttack;
   private final WeaponTile.AttackType attackType;
+  private final int timeAttack;
 
-  public AttackRequest(PlayerTile player, WeaponTile weapon) {
+  public AttackRequest(PlayerTile player, WeaponTile weapon, int timeAttack) {
     this.player = player;
     this.weaponCost = weapon.getCost();
     this.weaponDamage = weapon.getDamage();
@@ -40,4 +41,8 @@ public class AttackRequest implements Request {
   public void modifyWeaponDamage(double factor) { weaponDamage *= (int)(weaponDamage * factor); }
 
   public WeaponTile.AttackType getAttackType() { return attackType; }
+
+  public int getTimeAttack() {
+    return timeAttack;
+  }
 }

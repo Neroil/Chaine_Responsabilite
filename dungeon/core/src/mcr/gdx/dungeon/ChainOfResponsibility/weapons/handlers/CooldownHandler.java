@@ -9,10 +9,12 @@ public class CooldownHandler extends AttackHandler {
     long weaponLastAttack = request.getWeaponLastAttack();
     int cooldown = request.getWeaponCooldown();
 
-    if (weaponLastAttack == -1 || (System.currentTimeMillis() - weaponLastAttack) > cooldown)
+    if (weaponLastAttack == -1 || (request.getTimeAttack() - weaponLastAttack) > cooldown)
       return invokeSuccessor(request);
-    else
+    else {
+      System.out.println("Weapon is on cooldown!");
       return false;
+    }
   }
 
 }

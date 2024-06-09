@@ -6,8 +6,7 @@ import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.Assets;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.elements.items.AttackItem;
-import mcr.gdx.dungeon.weapons.AttackRequest;
-import mcr.gdx.dungeon.weapons.handlers.DamageModifierHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.DamageModifierHandler;
 
 public class DamageRing extends AttackItem {
 

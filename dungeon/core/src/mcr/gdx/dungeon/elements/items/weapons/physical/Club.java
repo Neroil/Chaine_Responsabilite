@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import mcr.gdx.dungeon.Assets;
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.Constants;
-import mcr.gdx.dungeon.elements.items.WeaponTile;
 import mcr.gdx.dungeon.elements.items.weapons.PhysicalWeapon;
-import mcr.gdx.dungeon.weapons.handlers.PhysicalRessourceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.PhysicalRessourceHandler;
 
 public class Club extends PhysicalWeapon {
 

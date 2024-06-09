@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import mcr.gdx.dungeon.Assets;
 import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.Constants;
-import mcr.gdx.dungeon.elements.items.WeaponTile;
 import mcr.gdx.dungeon.elements.items.weapons.MagicalWeapon;
-import mcr.gdx.dungeon.weapons.handlers.MagicalRessourceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.MagicalRessourceHandler;
 
 public class MagicScepter extends MagicalWeapon {
 

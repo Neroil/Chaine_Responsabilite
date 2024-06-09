@@ -11,6 +11,7 @@ public class DamageModifierHandler extends AttackHandler{
 
     @Override
     protected boolean handleAttackRequest(AttackRequest request) {
+        System.out.println("Attack damage modified!!");
         request.modifyWeaponDamage(modifier);
         return invokeSuccessor(request);
     }

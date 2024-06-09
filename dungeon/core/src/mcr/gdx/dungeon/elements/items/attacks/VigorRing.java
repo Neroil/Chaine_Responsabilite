@@ -7,7 +7,7 @@ import mcr.gdx.dungeon.Assets;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.elements.items.AttackItem;
 import mcr.gdx.dungeon.elements.items.WeaponTile;
-import mcr.gdx.dungeon.weapons.handlers.CostModifierHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.CostModifierHandler;
 
 public class VigorRing extends AttackItem {
 

@@ -6,8 +6,8 @@ import mcr.gdx.dungeon.elements.items.WeaponTile;
 
 public abstract class MagicalWeapon extends WeaponTile{
 
-    public MagicalWeapon(Vector2 position, TextureRegion texture, String name, int damage, int cooldown, int range, int cost){
-        super(position, texture, name, damage, cooldown, range, cost);
+    public MagicalWeapon(Vector2 position, TextureRegion texture, int damage, int cooldown, int range, int cost){
+        super(position, texture, damage, cooldown, range, cost);
     }
 
     @Override

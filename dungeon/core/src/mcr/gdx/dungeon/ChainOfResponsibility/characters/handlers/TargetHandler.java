@@ -9,6 +9,7 @@ public class TargetHandler extends DamageHandler {
 
     @Override
     protected boolean handleDamageRequest(DamageRequest request) {
+        System.out.println("Searching targets");
         for(Vector2 position : request.getPositionsAttacked()){
             for(CharacterTile entity : request.getCollidableEntities()){
                 if(entity.position.equals(position)){

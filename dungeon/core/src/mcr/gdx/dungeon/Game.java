@@ -65,7 +65,7 @@ public class Game {
         return mapRenderer;
     }
 
-    PlayerTile getPlayer() {
+    public PlayerTile getPlayer() {
         return player;
     }
 
