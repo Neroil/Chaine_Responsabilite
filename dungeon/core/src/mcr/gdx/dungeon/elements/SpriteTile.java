@@ -1,6 +1,5 @@
 package mcr.gdx.dungeon.elements;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,7 +23,7 @@ public abstract class SpriteTile {
         sprite.draw(batch);
     }
 
-    public Rectangle getBoundingBox(){
+    public Rectangle getBoundingBox() {
         return sprite.getBoundingRectangle();
     }
 

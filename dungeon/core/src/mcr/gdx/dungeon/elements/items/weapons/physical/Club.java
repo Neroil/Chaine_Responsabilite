@@ -17,5 +17,7 @@ public class Club extends PhysicalWeapon {
     }
 
     @Override
-    public GenericHandler handler() { return new PhysicalRessourceHandler(); }
+    public GenericHandler handler() {
+        return new PhysicalRessourceHandler();
+    }
 }

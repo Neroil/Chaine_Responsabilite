@@ -11,7 +11,7 @@ public abstract class DefenseItem extends ItemTile {
     }
 
     @Override
-    public void pickUp(PlayerTile player){
+    public void pickUp(PlayerTile player) {
         player.addDefenseItem(this);
     }
 }

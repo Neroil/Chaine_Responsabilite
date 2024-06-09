@@ -40,6 +40,14 @@ public class PlayerTile extends CharacterTile{
         createAttackChain();
     }
 
+    public LinkedList<ItemTile> getAttackItems(){
+        return attackItems;
+    }
+
+    public LinkedList<ItemTile> getDefenseItems(){
+        return defenseItems;
+    }
+
     public void exitLevel(){
         game.exitLevel();
     }

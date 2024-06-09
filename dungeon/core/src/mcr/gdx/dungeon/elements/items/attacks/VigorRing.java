@@ -18,5 +18,7 @@ public class VigorRing extends AttackItem {
     }
 
     @Override
-    public GenericHandler handler() { return new CostModifierHandler(Constants.VIGOR_RING_MODIFIER, WeaponTile.AttackType.PHYSICAL); }
+    public GenericHandler handler() {
+        return new CostModifierHandler(Constants.VIGOR_RING_MODIFIER, WeaponTile.AttackType.PHYSICAL);
+    }
 }

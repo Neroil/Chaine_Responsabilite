@@ -17,6 +17,8 @@ public class MagicScepter extends MagicalWeapon {
     }
 
     @Override
-    public GenericHandler handler() { return new MagicalRessourceHandler(); }
+    public GenericHandler handler() {
+        return new MagicalRessourceHandler();
+    }
 
 }

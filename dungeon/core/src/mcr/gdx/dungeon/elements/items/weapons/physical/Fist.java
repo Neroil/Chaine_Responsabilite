@@ -10,7 +10,6 @@ import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.PhysicalRessourceH
 
 public class Fist extends PhysicalWeapon {
 
-    //Placeholder texture, won't be used...
     private final static TextureRegion TEXTURE = new TextureRegion(Assets.get("wpns_16x16_black_outline.png"), 128, 16, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
     public Fist(Vector2 position) {

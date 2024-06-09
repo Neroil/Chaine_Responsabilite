@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private SpriteBatch batch;
@@ -21,7 +20,6 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
 
         camera = new OrthographicCamera();
         game = new Game();
-        game.loadResources();
         game.initializeGame();
     }
 
@@ -45,7 +43,16 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         Camera.updateCameraPosition(game.getPlayer(), camera);
 
         // Handle player input
-        game.getInputHandler().handleInput(game.getPlayer(), game.getSpatialHashMap(),Gdx.graphics.getDeltaTime());
+        game.getInputHandler().handleInput(game.getPlayer(), game.getSpatialHashMap(), Gdx.graphics.getDeltaTime());
+
+        game.getGameHUD().render();
+
+        if (game.isGameOver()) {
+            game.getGameHUD().renderLoseScreen();
+        } else if (game.isGameWon()) {
+            game.getGameHUD().renderWinScreen();
+        }
+
     }
 
     private void updateCamera() {
@@ -61,8 +68,8 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         // Adjust the viewport based on the aspect ratio
         if (targetAspectRatio > baseAspectRatio) {
             // Window is wider than the base aspect ratio
-            camera.viewportHeight = baseHeight * 1f;
-            camera.viewportWidth = baseHeight * targetAspectRatio * 1f;
+            camera.viewportHeight = baseHeight;
+            camera.viewportWidth = baseHeight * targetAspectRatio;
         } else {
             // Window is taller than the base aspect ratio
             camera.viewportWidth = baseWidth;
@@ -74,8 +81,6 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
 
         camera.update();
     }
-
-
 
     @Override
     public void dispose() {

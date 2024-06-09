@@ -23,24 +23,9 @@ public class SpatialHashMap {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 if (grid[x][y] == null) {
-                    grid[x][y] = new HashSet<Rectangle>();
+                    grid[x][y] = new HashSet<>();
                 }
                 grid[x][y].add(rect);
-            }
-        }
-    }
-
-    public void remove(Rectangle rect) {
-        int minX = (int) (rect.x / CELL_SIZE);
-        int maxX = (int) ((rect.x + rect.width - 1) / CELL_SIZE);
-        int minY = (int) (rect.y / CELL_SIZE);
-        int maxY = (int) ((rect.y + rect.height - 1) / CELL_SIZE);
-
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                if (grid[x][y] != null) {
-                    grid[x][y].remove(rect);
-                }
             }
         }
     }

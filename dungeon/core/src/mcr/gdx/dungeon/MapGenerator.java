@@ -29,11 +29,11 @@ public class MapGenerator implements Disposable {
 
     public MapGenerator() {
         random = new Random();
-        rooms = new Array<Rectangle>();
-        corridors = new Array<Rectangle>();
+        rooms = new Array<>();
+        corridors = new Array<>();
     }
 
-    public void resetMap(){
+    public void resetMap() {
         rooms.clear();
         corridors.clear();
     }
@@ -63,16 +63,6 @@ public class MapGenerator implements Disposable {
     private TiledMapTileLayer createBaseLayer(int width, int height) {
         TiledMapTileLayer layer = new TiledMapTileLayer(width, height, Constants.TILE_SIZE, Constants.TILE_SIZE);
         layer.setName("walls");
-
-//        TextureRegion tileRegion = new TextureRegion(tilesetTexture, 128, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
-//        TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-//        cell.setTile(new StaticTiledMapTile(tileRegion));
-//
-//        for (int x = 0; x < width; x++) {
-//            for (int y = 0; y < height; y++) {
-//                layer.setCell(x, y, cell);
-//            }
-//        }
         return layer;
     }
 
@@ -82,7 +72,6 @@ public class MapGenerator implements Disposable {
 
             carveRoom(layer, room);
             rooms.add(room);
-
         }
     }
 
@@ -121,21 +110,6 @@ public class MapGenerator implements Disposable {
         }
     }
 
-    private Rectangle getClosestRoom(Array<Rectangle> rooms, Rectangle room) {
-        Rectangle closestRoom = null;
-        float minDistance = Float.MAX_VALUE;
-
-        for (Rectangle otherRoom : rooms) {
-            if (otherRoom != room) {
-                float distance = room.getCenter(new Vector2()).dst(otherRoom.getCenter(new Vector2()));
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestRoom = otherRoom;
-                }
-            }
-        }
-        return closestRoom;
-    }
 
     public Vector2 generateRandomPositionInRoom() {
         if (rooms.isEmpty()) {
@@ -190,7 +164,7 @@ public class MapGenerator implements Disposable {
         }
     }
 
-    private void carveHorizontalCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
+    private void carveCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
         int startX = Math.min(x1, x2);
         int endX = Math.max(x1, x2);
         int startY = Math.min(y1, y2);
@@ -210,24 +184,12 @@ public class MapGenerator implements Disposable {
         corridors.add(corridor);
     }
 
+    private void carveHorizontalCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
+        carveCorridor(layer, x1, y1, x2, y1);
+    }
+
     private void carveVerticalCorridor(TiledMapTileLayer layer, int x1, int y1, int x2, int y2) {
-        int startX = Math.min(x1, x2);
-        int endX = Math.max(x1, x2);
-        int startY = Math.min(y1, y2);
-        int endY = Math.max(y1, y2);
-
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-                if (!isCellInsideAnyRoom(x, y)) {
-                    layer.setCell(x, y, null);
-                }
-            }
-        }
-
-        int corridorWidth = endX - startX + 1;
-        int corridorHeight = endY - startY + 1;
-        Rectangle corridor = new Rectangle(startX, startY, corridorWidth, corridorHeight);
-        corridors.add(corridor);
+        carveCorridor(layer, x1, y1, x1, y2);
     }
 
     private void setWallTiles(TiledMapTileLayer layer) {

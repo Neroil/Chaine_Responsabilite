@@ -1,7 +1,6 @@
 package mcr.gdx.dungeon;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,7 +12,6 @@ import mcr.gdx.dungeon.elements.CharacterTile;
 
 import java.util.LinkedList;
 
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.elements.EnemyTile;
 import mcr.gdx.dungeon.elements.ItemTile;
 import mcr.gdx.dungeon.elements.PlayerTile;
@@ -35,7 +33,7 @@ public class Game {
     private final LinkedList<DamageNumber> damageNumbers = new LinkedList<>();
 
     // Item creators for random item generation
-    private static final ItemCreator[] itemCreators = new ItemCreator[] {
+    private static final ItemCreator[] itemCreators = new ItemCreator[]{
             Sword::new,
             Club::new,
             MagicScepter::new,
@@ -51,18 +49,10 @@ public class Game {
     private InputHandler inputHandler;
     private SpatialHashMap spatialHashMap;
     private int step = 0;
-    //private int score;
+
     private boolean isGameOver;
     private boolean isGameWon;
     private GameHUD gameHUD;
-
-    private GenericHandler firstHandler; // The start of the chain
-
-    public Game() {
-        //firstHandler = new MovementHandler(this); // Movement is the first step
-        //firstHandler.setNext(new EnemyTurnHandler(this)); // Then enemies take their turn
-
-    }
 
     OrthogonalTiledMapRenderer getMapRenderer() {
         return mapRenderer;
@@ -72,14 +62,14 @@ public class Game {
         return player;
     }
 
-    public void dispose(){
+    public void dispose() {
         map.dispose();
         mapRenderer.dispose();
         mapGenerator.dispose();
         gameHUD.dispose();
     }
 
-    public void initializeGame(){
+    public void initializeGame() {
         mapGenerator = new MapGenerator();
         mapGenerator.initializeTextures();
 
@@ -100,11 +90,9 @@ public class Game {
 
         gameHUD = new GameHUD(player);
 
-        //Generate enemies
+        //Generate the different elements of the game
         generateEnemies();
-        //Generate armes
         generateItems();
-
         generateExit();
     }
 
@@ -127,7 +115,7 @@ public class Game {
         }
     }
 
-    private void generateExit(){
+    private void generateExit() {
         Vector2 position = mapGenerator.generateRandomPositionInRoom();
         TextureRegion exitTexture = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png"), 144, 48, Constants.TILE_SIZE, Constants.TILE_SIZE);
         ItemTile exit = new Ladder(position, exitTexture);
@@ -137,7 +125,9 @@ public class Game {
 
     // Functional interface for creating items
     @FunctionalInterface
-    private interface ItemCreator { ItemTile create(Vector2 position); }
+    private interface ItemCreator {
+        ItemTile create(Vector2 position);
+    }
 
     private void generateItems() {
         for (int i = 0; i < Constants.NUM_ITEMS; i++) {
@@ -152,7 +142,7 @@ public class Game {
         }
     }
 
-    public void exitLevel(){
+    public void exitLevel() {
         isGameWon = true;
     }
 
@@ -178,29 +168,16 @@ public class Game {
         player.position.set(mapGenerator.validPlayerPos);
         player.snapToTileCenter();
         collidableEntities.add(player);
-
-        gameHUD = new GameHUD(player);
+        gameHUD.setPlayer(player);
 
         isGameOver = false;
+        isGameWon = false;
+
         generateEnemies();
         generateItems();
         generateExit();
 
         initializeCollisionDetection();
-    }
-
-    public void deleteGame(){
-        map.dispose();
-        mapRenderer.dispose();
-        enemies.clear();
-        items.clear();
-        collidableEntities.clear();
-        collidableEntities.add(player);
-
-        gameHUD = new GameHUD(player);
-
-        isGameOver = false;
-        isGameWon = false;
     }
 
     private void initializeCollisionDetection() {
@@ -214,18 +191,12 @@ public class Game {
         return step;
     }
 
-    public void setGameOver(boolean state) {
-        isGameOver = state;
-    }
-
     public boolean isGameOver() {
         return isGameOver;
     }
-    
+
     public void updateStep() {
-        // Update game state based on elapsed time
-        //handleChain();
-        // ...
+        // Update the game state
         ++step;
 
         //Check if player is dead
@@ -240,9 +211,9 @@ public class Game {
         //List of dead ennemies to remove
         LinkedList<EnemyTile> enemyToRemove = new LinkedList<>();
         //Move enemies
-        for(EnemyTile enemyTile : enemies){
+        for (EnemyTile enemyTile : enemies) {
             //Check if enemy is dead
-            if(!enemyTile.isAlive()){
+            if (!enemyTile.isAlive()) {
                 enemyToRemove.add(enemyTile);
                 continue;
             }
@@ -250,7 +221,7 @@ public class Game {
         }
 
         //Remove dead enemies
-        for(EnemyTile enemy : enemyToRemove){
+        for (EnemyTile enemy : enemyToRemove) {
             enemies.remove(enemy);
             collidableEntities.remove(enemy);
         }
@@ -268,20 +239,6 @@ public class Game {
     }
 
 
-
-//    public void handleChain() {
-//        firstHandler.handleRequest();
-//    }
-
-
-    public void loadResources() {
-        // Load game resources
-    }
-
-    public void unloadResources() {
-        // Unload game resources
-    }
-
     public void render(SpriteBatch batch) {
 
         // Render the background layer
@@ -296,11 +253,8 @@ public class Game {
 
         for (ItemTile item : items) {
             item.draw(batch);
-        }
 
         player.draw(batch);
-        gameHUD.render(batch);
-
         // Update and draw damage numbers
         for (int i = damageNumbers.size() - 1; i >= 0; i--) {
             DamageNumber number = damageNumbers.get(i);
@@ -311,16 +265,16 @@ public class Game {
                 number.draw(batch);
             }
         }
-
         batch.end();
-
         // Render the wall layer
         getMapRenderer().render(new int[]{1});
+    }
 
-        gameHUD.render();
+    public boolean isGameWon() {
+        return isGameWon;
+    }
 
-        if(isGameWon){
-            gameHUD.renderWinScreen(batch);
-        }
+    public GameHUD getGameHUD() {
+        return gameHUD;
     }
 }

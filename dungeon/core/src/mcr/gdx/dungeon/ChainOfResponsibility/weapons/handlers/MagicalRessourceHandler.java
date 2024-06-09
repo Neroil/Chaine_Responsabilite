@@ -5,20 +5,20 @@ import mcr.gdx.dungeon.elements.PlayerTile;
 
 public class MagicalRessourceHandler extends RessourceHandler {
 
-  @Override
-  protected boolean checkResources(AttackRequest request) {
-    int mana = request.getPlayer().getMana();
-    int cost = request.getWeaponCost();
+    @Override
+    protected boolean checkResources(AttackRequest request) {
+        int mana = request.getPlayer().getMana();
+        int cost = request.getWeaponCost();
 
-    return mana >= cost;
-  }
+        return mana >= cost;
+    }
 
-  @Override
-  protected void updateResources(AttackRequest request) {
-    PlayerTile player = request.getPlayer();
-    int cost = request.getWeaponCost();
+    @Override
+    protected void updateResources(AttackRequest request) {
+        PlayerTile player = request.getPlayer();
+        int cost = request.getWeaponCost();
 
-    player.reduceMana(cost);
-  }
+        player.reduceMana(cost);
+    }
 
 }

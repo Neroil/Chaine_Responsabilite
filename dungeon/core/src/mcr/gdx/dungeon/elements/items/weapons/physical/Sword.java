@@ -12,7 +12,9 @@ public class Sword extends PhysicalWeapon {
 
     private final static TextureRegion TEXTURE = new TextureRegion(Assets.get("wpns_16x16_black_outline.png"), 160, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
-    public Sword(Vector2 position) { super(position, TEXTURE, 3, 0, 3, 10); }
+    public Sword(Vector2 position) {
+        super(position, TEXTURE, 3, 0, 3, 10);
+    }
 
     @Override
     public GenericHandler handler() {
