@@ -1,6 +1,9 @@
 package mcr.gdx.dungeon;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 public class Constants {
+    static final BitmapFont font = new BitmapFont();
     public static final int TILE_SIZE = 16;
     public static final int BASE_Y_RESOLUTION = 480;
     public static final int BASE_X_RESOLUTION = 800;

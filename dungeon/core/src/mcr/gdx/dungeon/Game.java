@@ -16,6 +16,7 @@ import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
 import mcr.gdx.dungeon.elements.EnemyTile;
 import mcr.gdx.dungeon.elements.ItemTile;
 import mcr.gdx.dungeon.elements.PlayerTile;
+import mcr.gdx.dungeon.elements.items.Ladder;
 import mcr.gdx.dungeon.elements.items.attacks.DamageRing;
 import mcr.gdx.dungeon.elements.items.attacks.ManaRing;
 import mcr.gdx.dungeon.elements.items.attacks.VigorRing;
@@ -51,6 +52,7 @@ public class Game {
     private int step = 0;
     //private int score;
     private boolean isGameOver;
+    private boolean isGameWon;
     private GameHUD gameHUD;
 
     private GenericHandler firstHandler; // The start of the chain
@@ -97,11 +99,12 @@ public class Game {
 
         gameHUD = new GameHUD(player);
 
-        //TODO: Générer ennemis
-        // Generate enemies
+        //Generate enemies
         generateEnemies();
-        //TODO: Générer armes
+        //Generate armes
         generateItems();
+
+        generateExit();
     }
 
     public InputHandler getInputHandler() {
@@ -123,6 +126,14 @@ public class Game {
         }
     }
 
+    private void generateExit(){
+        Vector2 position = mapGenerator.generateRandomPositionInRoom();
+        TextureRegion exitTexture = new TextureRegion(Assets.get("2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png"), 144, 48, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        ItemTile exit = new Ladder(position, exitTexture);
+        exit.snapToTileCenter();
+        items.add(exit);
+    }
+
     // Functional interface for creating items
     @FunctionalInterface
     private interface ItemCreator { ItemTile create(Vector2 position); }
@@ -138,6 +149,10 @@ public class Game {
             item.snapToTileCenter();
             items.add(item);
         }
+    }
+
+    public void exitLevel(){
+        isGameWon = true;
     }
 
     public LinkedList<ItemTile> getItems() {
@@ -168,8 +183,23 @@ public class Game {
         isGameOver = false;
         generateEnemies();
         generateItems();
+        generateExit();
 
         initializeCollisionDetection();
+    }
+
+    public void deleteGame(){
+        map.dispose();
+        mapRenderer.dispose();
+        enemies.clear();
+        items.clear();
+        collidableEntities.clear();
+        collidableEntities.add(player);
+
+        gameHUD = new GameHUD(player);
+
+        isGameOver = false;
+        isGameWon = false;
     }
 
     private void initializeCollisionDetection() {
@@ -288,5 +318,8 @@ public class Game {
 
         gameHUD.render();
 
+        if(isGameWon){
+            gameHUD.renderWinScreen(batch);
+        }
     }
 }

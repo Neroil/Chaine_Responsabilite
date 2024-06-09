@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 
+import static mcr.gdx.dungeon.Constants.font;
+
 public class DamageNumber {
     private final String damageText;
     private final Vector2 position;
     private float timer;
     private static final float DISPLAY_TIME = 2f; // Seconds to display
-    private static final BitmapFont font = new BitmapFont(); // Use your preferred font
 
     public DamageNumber(int damageAmount, Vector2 characterPosition) {
         this.damageText = String.valueOf(damageAmount);

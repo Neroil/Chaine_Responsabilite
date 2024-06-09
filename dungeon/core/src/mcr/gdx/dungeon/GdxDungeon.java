@@ -18,6 +18,7 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
     @Override
     public void create() {
         batch = new SpriteBatch();
+
         camera = new OrthographicCamera();
         game = new Game();
         game.loadResources();

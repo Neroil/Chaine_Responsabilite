@@ -1,10 +1,15 @@
 package mcr.gdx.dungeon;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import mcr.gdx.dungeon.elements.PlayerTile;
+
+import static mcr.gdx.dungeon.Constants.font;
+
 
 public class GameHUD {
     private final ShapeRenderer shapeRenderer;
@@ -32,6 +37,20 @@ public class GameHUD {
 
         batch.draw(textureRegion, 20, 110, 0, 0, 32, 32, 0.5f, 0.5f, 0); // Scaling by 0.5
 
+    }
+
+    void renderWinScreen(SpriteBatch batch) {
+        // Draw a black screen
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.BLACK);
+//        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        shapeRenderer.end();
+
+        batch.begin();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(3);
+        font.draw(batch, "You Win", Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        batch.end();
     }
 
     public void render() {
