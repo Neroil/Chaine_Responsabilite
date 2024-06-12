@@ -7,6 +7,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+/**
+ * Main class for the GdxDungeon game.
+ * This class extends ApplicationAdapter and implements Disposable to manage the game lifecycle and resources.
+ *
+ * @version 1.0
+ * @author Edwin Haeffner
+ * @author Esteban Logo
+ * @author Junod Arthur
+ * @author Yanis Ouadahi
+ */
 public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -14,15 +24,23 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private Game game;
 
 
+    /**
+     * This method is called when the application is created.
+     * It initializes the SpriteBatch, OrthographicCamera, Game objects and the game itself.
+     */
     @Override
     public void create() {
         batch = new SpriteBatch();
-
         camera = new OrthographicCamera();
         game = new Game();
         game.initializeGame();
     }
 
+    /**
+     * This method is called every frame to render the game.
+     * It updates the camera, handles player input, and renders the game and HUD.
+     * It's also where the game over and win screens are rendered.
+     */
     @Override
     public void render() {
         ScreenUtils.clear(0, 0, 0, 1);
@@ -55,10 +73,14 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
 
     }
 
+    /**
+     * This method updates the camera's viewport based on the window's aspect ratio.
+     */
     private void updateCamera() {
         float targetWidth = Gdx.graphics.getWidth();
         float targetHeight = Gdx.graphics.getHeight();
 
+        //Render resolution of the game, it's low since it's a pixelated game
         float baseWidth = Constants.BASE_X_RENDER_RES;
         float baseHeight = Constants.BASE_Y_RENDER_RES;
         float baseAspectRatio = baseWidth / baseHeight;
@@ -67,11 +89,9 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
 
         // Adjust the viewport based on the aspect ratio
         if (targetAspectRatio > baseAspectRatio) {
-            // Window is wider than the base aspect ratio
             camera.viewportHeight = baseHeight;
             camera.viewportWidth = baseHeight * targetAspectRatio;
         } else {
-            // Window is taller than the base aspect ratio
             camera.viewportWidth = baseWidth;
             camera.viewportHeight = baseWidth / targetAspectRatio;
         }
@@ -82,6 +102,10 @@ public class GdxDungeon extends ApplicationAdapter implements Disposable {
         camera.update();
     }
 
+    /**
+     * This method is called when the application is disposed.
+     * It disposes the SpriteBatch, Assets, and Game objects to free up resources.
+     */
     @Override
     public void dispose() {
         batch.dispose();
