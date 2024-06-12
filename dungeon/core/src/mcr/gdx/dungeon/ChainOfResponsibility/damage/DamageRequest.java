@@ -1,4 +1,4 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.characters;
+package mcr.gdx.dungeon.ChainOfResponsibility.damage;
 
 import com.badlogic.gdx.math.Vector2;
 

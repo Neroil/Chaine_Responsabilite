@@ -2,16 +2,16 @@ package mcr.gdx.dungeon.elements;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
-import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.damage.DamageRequest;
 import mcr.gdx.dungeon.elements.items.WeaponTile;
 import mcr.gdx.dungeon.elements.items.weapons.physical.Fist;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.CooldownHandler;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.HitChanceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.CooldownHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.HitChanceHandler;
 
 import java.util.LinkedList;
 
@@ -29,7 +29,7 @@ public class PlayerTile extends CharacterTile{
     private WeaponTile weapon = new Fist(new Vector2(0, 0));
     private final LinkedList<ItemTile> attackItems;
     private final LinkedList<ItemTile> defenseItems;
-    private GenericHandler attackChain;
+    private Handler attackChain;
 
     public PlayerTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game){
         super(position, texture, collidableEntities, game, HEALTH_MAX);
@@ -131,7 +131,7 @@ public class PlayerTile extends CharacterTile{
 
     private void createAttackChain(){
         attackChain = new CooldownHandler();
-        GenericHandler chaining = attackChain.setSuccessor(new HitChanceHandler());
+        Handler chaining = attackChain.setSuccessor(new HitChanceHandler());
         for(ItemTile i : attackItems){
             chaining = chaining.setSuccessor(i.handler());
         }

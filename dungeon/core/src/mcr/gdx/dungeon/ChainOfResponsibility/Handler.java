@@ -1,10 +1,10 @@
 package mcr.gdx.dungeon.ChainOfResponsibility;
 
-abstract public class GenericHandler {
+abstract public class Handler {
 
-    private GenericHandler successor;
+    private Handler successor;
 
-    public GenericHandler setSuccessor(GenericHandler successor) {
+    public Handler setSuccessor(Handler successor) {
         if (successor == null) return this;
         this.successor = successor;
         return successor;

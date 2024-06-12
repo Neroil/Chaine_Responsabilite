@@ -1,7 +1,7 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.damage.handlers;
 
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.damage.DamageRequest;
 import mcr.gdx.dungeon.elements.CharacterTile;
 
 public class TargetHandler extends DamageHandler {

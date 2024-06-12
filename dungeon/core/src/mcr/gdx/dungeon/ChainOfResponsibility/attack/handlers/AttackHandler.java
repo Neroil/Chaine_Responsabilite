@@ -1,10 +1,10 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers;
 
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
 
-abstract public class AttackHandler extends GenericHandler {
+abstract public class AttackHandler extends Handler {
 
     @Override
     public boolean handleRequest(Request request) {

@@ -1,4 +1,4 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.weapons;
+package mcr.gdx.dungeon.ChainOfResponsibility.attack;
 
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.elements.PlayerTile;

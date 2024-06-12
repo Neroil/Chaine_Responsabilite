@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
 import mcr.gdx.dungeon.ChainOfResponsibility.Request;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.DamageNumber;
 import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
-import mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers.HitHandler;
-import mcr.gdx.dungeon.ChainOfResponsibility.characters.handlers.TargetHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.damage.handlers.HitHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.damage.handlers.TargetHandler;
 
 import java.util.LinkedList;
 import java.util.Set;
@@ -22,7 +22,7 @@ public class CharacterTile extends SpriteTile {
     protected int healthPoint;
     protected LinkedList<CharacterTile> collidableEntities = new LinkedList<CharacterTile>();
     private Vector2 facingDirection = Direction.DOWN.getDirection();
-    private final GenericHandler requestDamageChain;
+    private final Handler requestDamageChain;
     protected final Game game;
 
     public enum Direction {

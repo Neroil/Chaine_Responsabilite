@@ -1,6 +1,6 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers;
 
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
 
 import java.util.Random;
 

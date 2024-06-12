@@ -3,10 +3,10 @@ package mcr.gdx.dungeon.elements.items.weapons.magical;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import mcr.gdx.dungeon.Assets;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.elements.items.weapons.MagicalWeapon;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.MagicalRessourceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.ManaHandler;
 
 public class MagicScepter extends MagicalWeapon {
 
@@ -17,8 +17,8 @@ public class MagicScepter extends MagicalWeapon {
     }
 
     @Override
-    public GenericHandler handler() {
-        return new MagicalRessourceHandler();
+    public Handler handler() {
+        return new ManaHandler();
     }
 
 }

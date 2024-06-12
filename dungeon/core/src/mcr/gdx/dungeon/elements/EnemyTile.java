@@ -2,10 +2,10 @@ package mcr.gdx.dungeon.elements;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
-import mcr.gdx.dungeon.ChainOfResponsibility.characters.DamageRequest;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.HitChanceHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
+import mcr.gdx.dungeon.ChainOfResponsibility.damage.DamageRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.HitChanceHandler;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.Game;
 import mcr.gdx.dungeon.SpatialHashMap;
@@ -16,7 +16,7 @@ import java.util.LinkedList;
 
 public class EnemyTile extends CharacterTile {
 
-    private final GenericHandler attackChain;
+    private final Handler attackChain;
     private final WeaponTile weapon;
 
     public EnemyTile(Vector2 position, TextureRegion texture, LinkedList<CharacterTile> collidableEntities, Game game) {

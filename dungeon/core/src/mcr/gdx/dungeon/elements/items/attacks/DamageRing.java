@@ -2,11 +2,11 @@ package mcr.gdx.dungeon.elements.items.attacks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import mcr.gdx.dungeon.ChainOfResponsibility.GenericHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
 import mcr.gdx.dungeon.Assets;
 import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.elements.items.AttackItem;
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers.DamageModifierHandler;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.DamageModifierHandler;
 
 public class DamageRing extends AttackItem {
 
@@ -17,7 +17,7 @@ public class DamageRing extends AttackItem {
     }
 
     @Override
-    public GenericHandler handler() {
+    public Handler handler() {
         return new DamageModifierHandler(2);
     }
 }

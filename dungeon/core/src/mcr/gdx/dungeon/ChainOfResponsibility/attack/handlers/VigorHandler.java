@@ -1,9 +1,9 @@
-package mcr.gdx.dungeon.ChainOfResponsibility.weapons.handlers;
+package mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers;
 
-import mcr.gdx.dungeon.ChainOfResponsibility.weapons.AttackRequest;
+import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
 import mcr.gdx.dungeon.elements.PlayerTile;
 
-public class PhysicalRessourceHandler extends RessourceHandler {
+public class VigorHandler extends RessourceHandler {
 
     @Override
     protected boolean checkResources(AttackRequest request) {
