@@ -18,7 +18,6 @@ import java.util.Random;
 /**
  * The MapGenerator class is responsible for generating the game map.
  * It creates rooms and corridors, sets wall tiles, and generates valid positions within the dungeon.
- * This class implements Disposable to manage the lifecycle of its resources.
  *
  * @version 1.0
  * @author Edwin Haeffner
@@ -26,16 +25,13 @@ import java.util.Random;
  * @author Junod Arthur
  * @author Yanis Ouadahi
  */
-public class MapGenerator implements Disposable {
+public class MapGenerator{
     private static final String MAP_TILE_SET = "2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png";
     private static final WallCell[] WALL_CELLS = new WallCell[2];
 
     private final Random random;
     private final Array<Rectangle> rooms;
     private final Array<Rectangle> corridors;
-    private Texture backgroundTexture;
-    private Texture tilesetTexture;
-
 
     /**
      * Constructs a new MapGenerator.
@@ -59,14 +55,8 @@ public class MapGenerator implements Disposable {
      * Initializes the textures for the map.
      */
     public void initializeTextures() {
-        backgroundTexture = new Texture(MAP_TILE_SET);
-        backgroundTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
-        tilesetTexture = new Texture(MAP_TILE_SET);
-        tilesetTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
-        WALL_CELLS[0] = new WallCell(tilesetTexture, 80, 16); // General Wall
-        WALL_CELLS[1] = new WallCell(tilesetTexture, 128, 112); // Inside wall
+        WALL_CELLS[0] = new WallCell(Assets.get(MAP_TILE_SET), 80, 16); // General Wall
+        WALL_CELLS[1] = new WallCell(Assets.get(MAP_TILE_SET), 128, 112); // Inside wall
     }
 
     /**
@@ -374,7 +364,7 @@ public class MapGenerator implements Disposable {
      * @return the background layer
      */
     private TiledMapTileLayer generateBackground(int width, int height) {
-        TextureRegion backgroundRegion = new TextureRegion(backgroundTexture, 144, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        TextureRegion backgroundRegion = new TextureRegion(Assets.get(MAP_TILE_SET), 144, 112, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
         TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(width, height, Constants.TILE_SIZE, Constants.TILE_SIZE);
         backgroundLayer.setName("background");
@@ -410,12 +400,4 @@ public class MapGenerator implements Disposable {
         return wallTiles;
     }
 
-    /**
-     * Disposes of the resources used by this.
-     */
-    @Override
-    public void dispose() {
-        backgroundTexture.dispose();
-        tilesetTexture.dispose();
-    }
 }

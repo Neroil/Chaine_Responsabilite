@@ -224,7 +224,7 @@ public class Game {
         if (!player.isAlive())
             isGameOver = true;
 
-        if (step % 10 == 0)
+        if (step % Constants.RESSOURCE_REGEN_TIMEOUT == 0)
             player.updateRessources();
 
         //List of dead ennemies to remove
@@ -302,46 +302,90 @@ public class Game {
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
-        mapGenerator.dispose();
         gameHUD.dispose();
     }
 
-
+    /**
+     * Returns whether the game is won.
+     *
+     * @return true if the game is won, false otherwise
+     */
     public boolean isGameWon() {
         return isGameWon;
     }
 
+    /**
+     * Returns whether the game is over.
+     *
+     * @return true if the game is over, false otherwise
+     */
     public boolean isGameOver() {
         return isGameOver;
     }
 
+    /**************************************************************************
+     ********************************* Getters ********************************
+     **************************************************************************/
+
     /**
-     * GETTERS
+     * Returns the map renderer.
+     *
+     * @return the map renderer
      */
     OrthogonalTiledMapRenderer getMapRenderer() {
         return mapRenderer;
     }
 
+    /**
+     * Returns the player.
+     *
+     * @return the player
+     */
     public PlayerTile getPlayer() {
         return player;
     }
 
+    /**
+     * Returns the game HUD.
+     *
+     * @return the game HUD
+     */
     public GameHUD getGameHUD() {
         return gameHUD;
     }
 
+    /**
+     * Returns the current step.
+     *
+     * @return the current step
+     */
     public int getStep() {
         return step;
     }
 
+    /**
+     * Returns the list of enemies.
+     *
+     * @return the list of enemies
+     */
     public LinkedList<ItemTile> getItems() {
         return items;
     }
 
+    /**
+     * Returns the spatial hash map.
+     *
+     * @return the spatial hash map
+     */
     public SpatialHashMap getSpatialHashMap() {
         return spatialHashMap;
     }
 
+    /**
+     * Returns the input handler.
+     *
+     * @return the input handler
+     */
     public InputHandler getInputHandler() {
         return inputHandler;
     }

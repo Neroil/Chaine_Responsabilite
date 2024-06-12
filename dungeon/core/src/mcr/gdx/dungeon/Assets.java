@@ -6,6 +6,16 @@ import com.badlogic.gdx.graphics.Texture;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Assets class is used to load and store textures for the game.
+ * It ensures that each texture is only loaded once and that it is disposed of when the game is closed.
+ *
+ * @version 1.0
+ * @author Edwin Haeffner
+ * @author Esteban Logo
+ * @author Junod Arthur
+ * @author Yanis Ouadahi
+ */
 public class Assets {
     private static final Map<String, Texture> textures = new HashMap<String, Texture>();
 

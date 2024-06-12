@@ -2,6 +2,15 @@ package mcr.gdx.dungeon;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+/**
+ * The Constants class contains all the constants used in the game.
+ *
+ * @version 1.0
+ * @author Edwin Haeffner
+ * @author Esteban Logo
+ * @author Junod Arthur
+ * @author Yanis Ouadahi
+ */
 public class Constants {
     static final BitmapFont font = new BitmapFont();
     public static final int TILE_SIZE = 16;
@@ -20,4 +29,5 @@ public class Constants {
     public static final int NUM_ITEMS = 10;
     public static final double VIGOR_RING_MODIFIER = 0.5;
     public static final double MANA_RING_MODIFIER = 0.5;
+    public static final int RESSOURCE_REGEN_TIMEOUT = 20;
 }

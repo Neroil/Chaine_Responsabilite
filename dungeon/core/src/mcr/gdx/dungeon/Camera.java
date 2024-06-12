@@ -2,8 +2,23 @@ package mcr.gdx.dungeon;
 
 import mcr.gdx.dungeon.elements.CharacterTile;
 
+/**
+ * The Camera class is responsible for updating the camera's position to follow the player.
+ *
+ * @version 1.0
+ * @author Edwin Haeffner
+ * @author Esteban Logo
+ * @author Junod Arthur
+ * @author Yanis Ouadahi
+ */
 public class Camera {
 
+    /**
+     * Updates the camera's position to follow the player.
+     *
+     * @param player the player character to follow
+     * @param camera the camera to update
+     */
     static void updateCameraPosition(CharacterTile player, com.badlogic.gdx.graphics.OrthographicCamera camera) {
         // Get the player's position
         float playerX = player.position.x;
