@@ -9,11 +9,10 @@ import mcr.gdx.dungeon.Constants;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setTitle("Dongeon!!");
+		config.setTitle("The Edaryaban Dungeon");
 		config.setWindowedMode(Constants.BASE_X_RESOLUTION, Constants.BASE_Y_RESOLUTION);
 		config.useVsync(true);
 		config.setForegroundFPS(Constants.TARGET_FPS);
-		config.setTitle("gdx-dungeon-mcr-responsibility-chain");
 		new Lwjgl3Application(new GdxDungeon(), config);
 	}
 }
