@@ -1,6 +1,5 @@
 package mcr.gdx.dungeon;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 import mcr.gdx.dungeon.elements.WallCell;
 
 import java.util.ArrayList;
@@ -80,8 +78,8 @@ public class MapGenerator{
 
     /**
      * Creates a base layer for the map with the specified width and height.
-     * @param width the width of the layer
-     * @param height the height of the layer
+     * @param width     the width of the layer
+     * @param height    the height of the layer
      * @return the base layer
      */
     private TiledMapTileLayer createBaseLayer(int width, int height) {

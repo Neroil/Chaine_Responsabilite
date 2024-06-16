@@ -51,9 +51,9 @@ public class InputHandler extends InputAdapter {
      * Z -> attack (Y on a QWERTZ keyboard)
      * R -> reset the game
      *
-     * @param player the player character to handle input for
-     * @param spatialHashMap the spatial hash map for collision detection
-     * @param delta the time elapsed since the last frame
+     * @param player            the player character to handle input for
+     * @param spatialHashMap    the spatial hash map for collision detection
+     * @param delta             the time elapsed since the last frame
      */
     public void handleInput(CharacterTile player, SpatialHashMap spatialHashMap, float delta) {
         Vector2 newPosition = new Vector2(player.position);

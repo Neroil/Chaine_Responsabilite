@@ -16,6 +16,12 @@ public class DamageRing extends AttackItem {
         super(position, TEXTURE);
     }
 
+    /**
+     * Method to get the handler for the damage ring.
+     * This method returns a new instance of DamageModifierHandler.
+     *
+     * @return Handler  The handler for the damage ring.
+     */
     @Override
     public Handler handler() {
         return new DamageModifierHandler(2);

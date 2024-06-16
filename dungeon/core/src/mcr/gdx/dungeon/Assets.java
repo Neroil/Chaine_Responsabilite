@@ -19,6 +19,14 @@ import java.util.Map;
 public class Assets {
     private static final Map<String, Texture> textures = new HashMap<String, Texture>();
 
+
+    /**
+     * Returns the texture at the specified path.
+     * If the texture has not been loaded yet, it is loaded and stored in the textures map.
+     *
+     * @param path the path to the texture
+     * @return the texture at the specified path
+     */
     public static Texture get(String path) {
         Texture texture = textures.get(path);
         if (texture == null) {
@@ -29,6 +37,9 @@ public class Assets {
         return texture;
     }
 
+    /**
+     * Disposes of all loaded textures.
+     */
     public static void dispose() {
         for (Texture texture : textures.values()) {
             texture.dispose();
