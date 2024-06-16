@@ -45,6 +45,11 @@ public abstract class SpriteTile {
         sprite.draw(batch);
     }
 
+    /**
+     * Returns the bounding box (the hitbox) of the SpriteTile.
+     *
+     * @return the bounding box of the SpriteTile
+     */
     public Rectangle getBoundingBox() {
         return sprite.getBoundingRectangle();
     }

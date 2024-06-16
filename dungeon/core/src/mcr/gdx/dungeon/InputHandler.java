@@ -29,11 +29,11 @@ public class InputHandler extends InputAdapter {
     private Direction direction = null;
     private Direction lastDirection = null;
     private final Game game;
-    private float moveDelay = 0.2f;// Delay in seconds between each movement
-    private float changeDirectionDelay = 0.1f;// Delay in seconds between each direction change
+    private float moveDelay = 0.2f;             // Delay in seconds between each movement
+    private float changeDirectionDelay = 0.1f;  // Delay in seconds between each direction change
     private float changeDirectionTimer = 0f;
     private float moveTimer = 0f;
-    private boolean isKeyPressed = false;// Timer to track the elapsed time
+    private boolean isKeyPressed = false;       // Timer to track the elapsed time
 
     /**
      * Constructs a new InputHandler for the specified game.

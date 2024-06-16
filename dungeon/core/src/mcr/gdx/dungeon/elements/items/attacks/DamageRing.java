@@ -8,10 +8,24 @@ import mcr.gdx.dungeon.Constants;
 import mcr.gdx.dungeon.elements.items.AttackItem;
 import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.DamageModifierHandler;
 
+/**
+ * Represent the damage booster ring we can find in our game, it will double the damage of the attack.
+ *
+ * @version 1.0
+ * @author Edwin Haeffner
+ * @author Esteban Logo
+ * @author Junod Arthur
+ * @author Yanis Ouadahi
+ */
 public class DamageRing extends AttackItem {
 
     private final static TextureRegion TEXTURE = new TextureRegion(Assets.get("magicItems.png"), 16, 48, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
+    /**
+     * Constructs a new DamageRing with the specified position.
+     *
+     * @param position  The position of the damage ring
+     */
     public DamageRing(Vector2 position) {
         super(position, TEXTURE);
     }
