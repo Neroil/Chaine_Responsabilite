@@ -7,10 +7,10 @@ import mcr.gdx.dungeon.elements.CharacterTile;
  * Allow us to apply the damage of the attack to all the targets of our request by calling their corresponding function.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class HitHandler extends DamageHandler {
 

@@ -7,10 +7,10 @@ import mcr.gdx.dungeon.elements.items.WeaponTile;
  * This handler allow us to modify the cost of the attack if the handler and the attack have the same type.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class CostModifierHandler extends AttackHandler {
 

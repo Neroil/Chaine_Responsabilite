@@ -13,10 +13,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.CostModifierHandler
  * Represent the mana ring we can find in our game, it will reduce the cost of magical attacks by half.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class ManaRing extends AttackItem {
 

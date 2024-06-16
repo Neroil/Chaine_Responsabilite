@@ -14,10 +14,10 @@ import java.util.List;
  * contains information about the damage, the positions attacked, the collidable entities, and the targets.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class DamageRequest implements Request {
     private int damage;

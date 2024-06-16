@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
  * The Constants class contains all the constants used in the game.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Constants {
     static final BitmapFont font = new BitmapFont();

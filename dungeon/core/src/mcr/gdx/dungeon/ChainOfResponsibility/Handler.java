@@ -4,10 +4,10 @@ package mcr.gdx.dungeon.ChainOfResponsibility;
  * The abstract handler from which all the handler derive.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 abstract public class Handler {
 

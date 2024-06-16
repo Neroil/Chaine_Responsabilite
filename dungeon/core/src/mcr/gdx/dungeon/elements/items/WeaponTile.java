@@ -10,10 +10,10 @@ import mcr.gdx.dungeon.elements.PlayerTile;
  * top of it the weapon's damage, cooldown, last attack time, range, cost, and the attack's type.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public abstract class WeaponTile extends ItemTile {
     private final int damage;

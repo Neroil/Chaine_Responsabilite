@@ -9,10 +9,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.Handler;
  * top of it the item's pick up method and handler. Depending on the type of item, the item pickup's logic will be different.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public abstract class ItemTile extends SpriteTile {
     public ItemTile(Vector2 position, TextureRegion texture) {

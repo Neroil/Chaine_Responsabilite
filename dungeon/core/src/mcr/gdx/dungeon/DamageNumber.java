@@ -12,10 +12,10 @@ import static mcr.gdx.dungeon.Constants.font;
  * The damage number floats upwards and disappears after a certain amount of time.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class DamageNumber {
     private final String damageText;

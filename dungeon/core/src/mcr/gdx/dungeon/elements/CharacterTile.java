@@ -21,10 +21,10 @@ import java.util.Set;
  * top of it the character's health points, facing direction, and methods for moving and reducing life.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class CharacterTile extends SpriteTile {
 

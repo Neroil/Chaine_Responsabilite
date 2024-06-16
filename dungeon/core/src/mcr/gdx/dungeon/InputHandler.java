@@ -11,10 +11,10 @@ import mcr.gdx.dungeon.elements.CharacterTile;
  * It extends InputAdapter to handle keyboard input and uses a Direction enum to track the direction of movement.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class InputHandler extends InputAdapter {
 

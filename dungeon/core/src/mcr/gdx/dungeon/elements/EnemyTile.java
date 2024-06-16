@@ -20,10 +20,10 @@ import java.util.LinkedList;
  * If the player isn't in range, the enemy will move around randomly.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class EnemyTile extends CharacterTile {
 

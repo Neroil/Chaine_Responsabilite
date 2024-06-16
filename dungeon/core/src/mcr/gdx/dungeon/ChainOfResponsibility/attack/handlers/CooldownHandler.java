@@ -6,10 +6,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
  * The handler that check the cooldown of the weapon we use to attack.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class CooldownHandler extends AttackHandler {
 

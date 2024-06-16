@@ -12,10 +12,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * This class extends ApplicationAdapter and implements Disposable to manage the game lifecycle and resources.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class GdxDungeon extends ApplicationAdapter implements Disposable {
     private SpriteBatch batch;

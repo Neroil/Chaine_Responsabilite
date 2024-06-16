@@ -8,10 +8,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.damage.DamageRequest;
  * The abstract handler from which all the handler from the damage request chain derive.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public abstract class DamageHandler extends Handler {
 

@@ -29,10 +29,10 @@ import static com.badlogic.gdx.math.MathUtils.random;
  * It handles the game state, player, enemies, items, and game map.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Game {
     // Item creators for random item generation

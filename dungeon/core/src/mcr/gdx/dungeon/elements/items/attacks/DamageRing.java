@@ -12,10 +12,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.DamageModifierHandl
  * Represent the damage booster ring we can find in our game, it will double the damage of the attack.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class DamageRing extends AttackItem {
 

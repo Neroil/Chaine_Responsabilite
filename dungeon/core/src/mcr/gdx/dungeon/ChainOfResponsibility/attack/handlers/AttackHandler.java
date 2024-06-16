@@ -8,10 +8,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.AttackRequest;
  * The abstract handler from which all the handlers of the attack chain derive.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 abstract public class AttackHandler extends Handler {
 

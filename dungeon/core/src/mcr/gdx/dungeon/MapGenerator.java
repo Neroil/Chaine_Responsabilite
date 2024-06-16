@@ -18,10 +18,10 @@ import java.util.Random;
  * It creates rooms and corridors, sets wall tiles, and generates valid positions within the dungeon.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class MapGenerator{
     private static final String MAP_TILE_SET = "2D Pixel Dungeon Asset Pack/character and tileset/Dungeon_Tileset.png";

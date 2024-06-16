@@ -13,10 +13,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.CostModifierHandler
  * Represent the vigor ring we can find in our game.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class VigorRing extends AttackItem {
 

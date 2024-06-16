@@ -11,10 +11,10 @@ import java.util.Map;
  * It ensures that each texture is only loaded once and that it is disposed of when the game is closed.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Assets {
     private static final Map<String, Texture> textures = new HashMap<String, Texture>();

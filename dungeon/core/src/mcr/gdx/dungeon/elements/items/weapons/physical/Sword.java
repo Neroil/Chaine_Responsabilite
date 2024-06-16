@@ -13,10 +13,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.VigorHandler;
  * The sword has a damage of 3, a cooldown of 0, a range of 3, and a cost of 10.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Sword extends PhysicalWeapon {
 

@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
  * The WallCell class represents a cell in the dungeon that contains a wall.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class WallCell {
     private final StaticTiledMapTile tile;

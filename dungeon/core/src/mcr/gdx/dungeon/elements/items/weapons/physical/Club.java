@@ -13,10 +13,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.VigorHandler;
  * The club has a damage of 5, a cooldown of 1, a range of 1, and a cost of 20.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Club extends PhysicalWeapon {
 

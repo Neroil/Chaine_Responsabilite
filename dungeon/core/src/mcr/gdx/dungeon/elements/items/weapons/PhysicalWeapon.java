@@ -9,10 +9,10 @@ import mcr.gdx.dungeon.elements.items.WeaponTile;
  * This class extends the WeaponTile class and provides a method for getting the attack type, which is physical.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public abstract class PhysicalWeapon extends WeaponTile {
 

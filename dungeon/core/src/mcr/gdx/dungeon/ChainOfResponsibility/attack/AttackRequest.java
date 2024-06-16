@@ -9,10 +9,10 @@ import mcr.gdx.dungeon.elements.items.WeaponTile;
  * contains information about the player making the request, the weapon used for the attack, and the time of the attack.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class AttackRequest implements Request {
 

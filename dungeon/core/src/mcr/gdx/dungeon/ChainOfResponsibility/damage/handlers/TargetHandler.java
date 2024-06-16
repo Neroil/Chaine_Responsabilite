@@ -8,10 +8,10 @@ import mcr.gdx.dungeon.elements.CharacterTile;
  * Allow us to fill the target list of our DamageRequest by checking if we find an entity on our attacked positions.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class TargetHandler extends DamageHandler {
 

@@ -8,10 +8,10 @@ import java.util.Random;
  * This handler makes an attack fail 20% of the time purely randomly.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class HitChanceHandler extends AttackHandler {
     private static final int HIT_CHANCE = 80;           // Chances of an attack to succeed

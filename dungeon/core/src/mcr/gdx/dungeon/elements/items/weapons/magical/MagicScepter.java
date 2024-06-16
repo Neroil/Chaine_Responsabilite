@@ -14,10 +14,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.ManaHandler;
  * The magic scepter has a damage of 3, a cooldown of 1, a range of 10, and a cost of 30.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class MagicScepter extends MagicalWeapon {
 

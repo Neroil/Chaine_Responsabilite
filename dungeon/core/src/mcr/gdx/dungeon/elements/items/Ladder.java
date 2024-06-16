@@ -12,10 +12,10 @@ import mcr.gdx.dungeon.elements.PlayerTile;
  * does not have any specific handlers.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Ladder extends ItemTile {
 

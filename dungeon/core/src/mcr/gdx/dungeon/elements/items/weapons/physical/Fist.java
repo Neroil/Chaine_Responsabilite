@@ -13,10 +13,10 @@ import mcr.gdx.dungeon.ChainOfResponsibility.attack.handlers.VigorHandler;
  * The fist has a damage of 1, a cooldown of 0, a range of 1, and a cost of 5.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public class Fist extends PhysicalWeapon {
 

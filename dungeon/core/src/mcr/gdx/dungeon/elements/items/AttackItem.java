@@ -10,10 +10,10 @@ import mcr.gdx.dungeon.elements.PlayerTile;
  * This class extends the ItemTile class and provides a method for picking up the item and adding it to the player's attack items.
  *
  * @version 1.0
- * @author Edwin Haeffner
- * @author Esteban Logo
+ * @author Haeffner Edwin
  * @author Junod Arthur
- * @author Yanis Ouadahi
+ * @author Lopez Esteban
+ * @author Ouadahi Yanis
  */
 public abstract class AttackItem extends ItemTile {
 
