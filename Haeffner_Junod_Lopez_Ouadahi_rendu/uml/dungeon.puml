@@ -1,0 +1,485 @@
+@startuml
+
+' Style
+hide empty members
+hide circle
+skinparam classAttributeIconSize 0
+
+class DamageRequest {
+	- damage: int
+	- positionsAttacked: List<Vector2>
+	+ modifyDamage(factor: int): void
+	+ getDamage(): int
+	+ getCollidableEntities(): List<CharacterTile>
+	+ getPositionsAttacked(): List<Vector2>
+	+ addTarget(target: CharacterTile): void
+	+ getTargets(): List<CharacterTile>
+}
+
+abstract class PhysicalWeapon {
+	+ getAttackType(): AttackType
+}
+
+abstract class MagicalWeapon {
+    + getAttackType(): AttackType
+}
+
+class PlayerTile {
+	- {static} MANA_MAX: int
+	- {static} MANA_GAIN: int
+	- {static} VIGOR_MAX: int
+	- {static} VIGOR_GAIN: int
+	- {static} HEALTH_MAX: int
+	- mana: int
+	- vigor: int
+	+ getAttackItems(): LinkedList<ItemTile>
+	+ getDefenseItems(): LinkedList<ItemTile>
+	+ exitLevel(): void
+	+ reset(): void
+	+ attack(): void
+	+ getMana(): int
+	+ getVigor(): int
+	+ getManaMax(): int
+	+ getVigorMax(): int
+	+ reduceVigor(cost: int): void
+	+ reduceMana(cost: int): void
+	+ updateRessources(): void
+	+ pickUpItem(item: ItemTile): void
+	- createAttackChain(): void
+	+ addAttackItem(item: ItemTile): void
+	+ addDefenseItem(item: ItemTile): void
+	+ setWeapon(weapon: WeaponTile): void
+	+ getWeapon(): WeaponTile
+	+ move(direction: Vector2, spatialHashMap: SpatialHashMap): void
+}
+
+
+class Ladder {
+	+ pickUp(player: PlayerTile): void
+	+ handler(): Handler
+}
+
+abstract class ItemTile {
+	+ {abstract}pickUp(player: PlayerTile): void
+	+ {abstract}handler(): Handler
+}
+
+class Sword {
+	- {static} TEXTURE: TextureRegion
+	+ handler(): Handler
+}
+
+class SpatialHashMap {
+	- {static} CELL_SIZE: int
+	- grid: Set<Rectangle>[][]
+	- numCellsX: int
+	- numCellsY: int
+	+ insert(rect: Rectangle): void
+	+ getPotentialColliders(rect: Rectangle): Set<Rectangle>
+	+ clear(): void
+	- getMinCellX(x: float): int
+	- getMaxCellX(x: float): int
+	- getMinCellY(y: float): int
+	- getMaxCellY(y: float): int
+	- addRectToCell(rect: Rectangle, x: int, y: int): void
+}
+
+abstract class WeaponTile {
+	- damage: int
+	- cooldown: int
+	- lastAttack: int
+	- range: int
+	- cost: int
+	+ pickUp(player: PlayerTile): void
+	+ getDamage(): int
+	+ getCooldown(): int
+	+ setLastAttack(step: int): void
+	+ getLastAttack(): int
+	+ getRange(): int
+	+ getCost(): int
+	+ {abstract}getAttackType(): AttackType
+}
+
+
+enum AttackType {
+	+ PHYSICAL
+	+ MAGICAL
+}
+
+class VigorHandler {
+	# checkResources(request: AttackRequest): boolean
+	# updateResources(request: AttackRequest): void
+}
+
+class DamageModifierHandler {
+	- modifier: double
+	# handleAttackRequest(request: AttackRequest): boolean
+}
+
+class Game {
+    - map : TiledMap
+    - mapRenderer : OrthogonalTiledMapRenderer
+    - step : int
+    - isGameOver : boolean
+    - isGameWon : boolean
+    - gameHUD : GameHUD
+    + initializeGame() : void
+    + addDamageNumber(damageNumber : DamageNumber) : void
+    - generateEnemies() : void
+    - generateExit() : void
+    - generateItems() : void
+    + exitLevel() : void
+    + resetGame() : void
+    - initializeCollisionDetection() : void
+    + updateStep() : void
+    + render(batch : SpriteBatch) : void
+    + dispose() : void
+    + isGameWon() : boolean
+    + isGameOver() : boolean
+    + getMapRenderer() : OrthogonalTiledMapRenderer
+    + getPlayer() : PlayerTile
+    + getGameHUD() : GameHUD
+    + getStep() : int
+    + getItems() : LinkedList<ItemTile>
+    + getSpatialHashMap() : SpatialHashMap
+    + getInputHandler() : InputHandler
+}
+
+class AttackRequest {
+  - weaponCost : int
+  - weaponDamage : int
+  - weaponCooldown : int
+  - weaponLastAttack : long
+  - timeAttack : int
+
+  + AttackRequest(player:PlayerTile, weapon:WeaponTile, timeAttack:int)
+  + getPlayer() : PlayerTile
+  + getWeaponCost() : int
+  + getWeaponDamage() : int
+  + getWeaponCooldown() : int
+  + getWeaponLastAttack() : long
+  + modifyWeaponCost(factor:double) : void
+  + modifyWeaponDamage(factor:double) : void
+  + getAttackType() : WeaponTile.AttackType
+  + getTimeAttack() : int
+}
+
+class GameHUD {
+	- shapeRenderer: ShapeRenderer
+	- defaultTexture: TextureRegion
+	~ HUDbatch: SpriteBatch
+
+	+ setPlayer(player: PlayerTile): void
+	+ render(): void
+	- renderBars(): void
+	- drawBar(color: Color, x: float, y: float, value: float, max: float): void
+	- renderWeapon(): void
+	- renderItems(): void
+	- drawItemInHorizontalLine(item: ItemTile, itemX: float, itemY: float): float
+	- renderEndTextScreen(text: String): void
+	+ renderWinScreen(): void
+	+ renderLoseScreen(): void
+	+ dispose(): void
+}
+
+abstract class AttackHandler {
+  + handleRequest(request:Request) : boolean
+  {abstract} protected handleAttackRequest(request:AttackRequest) : boolean
+}
+
+abstract class RessourceHandler {
+    {abstract} protected checkResources(request:AttackRequest) : boolean
+    {abstract} protected updateResources(request:AttackRequest) : void
+    + handleAttackRequest(request:AttackRequest) : boolean
+}
+
+class CooldownHandler {
+    + handleAttackRequest(request:AttackRequest) : boolean
+}
+
+class ManaHandler {
+    + checkResources(request:AttackRequest) : boolean
+    + updateResources(request:AttackRequest) : void
+}
+
+abstract class DamageHandler {
+    + handleRequest(request:Request) : boolean
+    {abstract} protected handleDamageRequest(request:DamageRequest) : boolean
+}
+
+class HitHandler {
+    + handleDamageRequest(request:DamageRequest) : boolean
+}
+
+class Club {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class Fist {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class DefenseItem {
+    + pickUp(player: PlayerTile): void
+}
+
+class DamageRing {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class Game$ItemCreator {
+    + createItem(position: Vector2): void
+}
+
+class DamageNumber {
+	- damageText: String
+	- position: Vector2
+	- timer: float
+	- {static} DISPLAY_TIME: float
+	- {static} OFFSET: float
+	+ update(delta: float): void
+	+ isExpired(): boolean
+	+ draw(batch: SpriteBatch): void
+}
+
+class EnemyTile {
+  + EnemyTile(position:Vector2, texture:TextureRegion, collidableEntities:LinkedList<CharacterTile>, game:Game)
+  + attack() : void
+  + move(spatialHashMap:SpatialHashMap) : void
+  - getRange() : float
+  - calculateDirection() : Vector2
+  + getRandomDirection() : Vector2
+}
+
+abstract class AttackItem {
+	+ pickUp(player: PlayerTile): void
+}
+
+class CharacterTile {
+	# healthPoint: int
+	- facingDirection: Vector2
+	+ getFacingDirection(): Vector2
+	+ isAlive(): boolean
+	+ reduceLife(amount: int): void
+	+ getHP(): int
+	+ move(direction: Vector2, spatialHashMap: SpatialHashMap): void
+	# setFacingDirection(direction: Vector2): void
+	+ draw(batch: SpriteBatch): void
+	- isCollision(newPosition: Vector2, spatialHashMap: SpatialHashMap): boolean
+	+ getPosition(): Vector2
+	# requestDamage(request: Request): void
+}
+
+enum Direction {
+	+ UP
+	+ DOWN
+	+ LEFT
+	+ RIGHT
+	- direction: Vector2
+	+ getDirection(): Vector2
+}
+
+class InputHandler {
+	- moveDelay: float
+	- changeDirectionDelay: float
+	- changeDirectionTimer: float
+	- moveTimer: float
+	- isKeyPressed: boolean
+	+ handleInput(player: CharacterTile, spatialHashMap: SpatialHashMap, \n\t delta: float): void
+}
+
+class HitChanceHandler {
+	- {static} HIT_CHANCE: int
+	- {static} random: Random
+	# handleAttackRequest(request: AttackRequest): boolean
+}
+
+
+class ManaRing {
+	- {static} TEXTURE: TextureRegion
+	+ handler(): Handler
+}
+
+
+abstract class Handler {
+	+ setSuccessor(successor: Handler): Handler
+	+ {abstract}handleRequest(request: Request): boolean
+	# invokeSuccessor(request: Request): boolean
+}
+
+
+class CostModifierHandler {
+	- modifier: double
+	# handleAttackRequest(request: AttackRequest): boolean
+}
+
+
+class VigorRing {
+	- {static} TEXTURE: TextureRegion
+	+ handler(): Handler
+}
+
+
+class TargetHandler {
+	# handleDamageRequest(request: DamageRequest): boolean
+}
+
+class MagicScepter {
+	- {static} TEXTURE: TextureRegion
+	+ handler(): Handler
+}
+
+class WallCell {
+    - tile: StaticTiledMapTile
+    - textureRegion: TextureRegion
+    + WallCell(tilesetTexture: Texture, x: int, y: int)
+    + getTile(): StaticTiledMapTile
+}
+
+class MapGenerator {
+	- {static} MAP_TILE_SET: String
+	- random: Random
+	- rooms: Array<Rectangle>
+	- corridors: Array<Rectangle>
+
+	+ clearMap(): void
+	+ initializeTextures(): void
+	+ generateProceduralMap(width: int, height: int, numRooms: int, map: TiledMap): void
+	- createBaseLayer(width: int, height: int): TiledMapTileLayer
+	- generateRooms(layer: TiledMapTileLayer, mapWidth: int, mapHeight: int, \n\t numRooms: int): void
+	- generateRandomRoom(mapWidth: int, mapHeight: int): Rectangle
+	- carveRoom(layer: TiledMapTileLayer, room: Rectangle): void
+	- connectRooms(layer: TiledMapTileLayer): void
+	- carveCorridorBetweenRooms(layer: TiledMapTileLayer, room1: Rectangle, \n\t room2: Rectangle): void
+	- generateCorridorPath(start: Vector2, end: Vector2): List<Vector2>
+	- getRandomDirection(end: Vector2, current: Vector2, previous: Vector2): Vector2
+	- carveCorridor(layer: TiledMapTileLayer, x1: int, y1: int, x2: int, y2: int): void
+	- setWallTiles(layer: TiledMapTileLayer): void
+	- setWallTileBasedOnDirection(layer: TiledMapTileLayer, x: int, y: int): void
+	~ isCellInsideAnyRoom(x: int, y: int): boolean
+	+ generateRandomPositionInRoom(): Vector2
+	- generateBackground(width: int, height: int): TiledMapTileLayer
+	+ getWallTiles(layer: TiledMapTileLayer): List<Rectangle>
+}
+
+
+class Camera {
+	~ {static} updateCameraPosition(camera: OrthographicCamera, position: Vector2): void
+}
+
+class EnemyTile {
+    + EnemyTile(position:Vector2, texture:TextureRegion, collidableEntities:LinkedList<CharacterTile>, game:Game)
+    + attack() : void
+    + move(spatialHashMap:SpatialHashMap) : void
+    - getRange() : float
+    - calculateDirection() : Vector2
+    + getRandomDirection() : Vector2
+}
+
+class SpriteTile {
+  + position: Vector2
+  - sprite: Sprite
+  # texture: TextureRegion
+
+  + SpriteTile(position:Vector2, texture:TextureRegion)
+  + draw(batch:SpriteBatch) : void
+  + getBoundingBox() : Rectangle
+  + snapToTileCenter() : void
+  + getTexture() : TextureRegion
+}
+
+class GdxDungeon {
+    - batch : SpriteBatch
+    - camera : OrthographicCamera
+    - pixelScaleFactor : float
+
+    + create() : void
+    + render() : void
+    - updateCamera() : void
+    + dispose() : void
+}
+
+' Heritage
+Request <|.. DamageRequest
+WeaponTile <|-- PhysicalWeapon
+CharacterTile <|-- PlayerTile
+ItemTile <|-- Ladder
+SpriteTile <|-- ItemTile
+PhysicalWeapon <|-- Sword
+ItemTile <|-- WeaponTile
+RessourceHandler <|-- VigorHandler
+AttackHandler <|-- DamageModifierHandler
+ItemTile <|-- AttackItem
+SpriteTile <|-- CharacterTile
+InputAdapter <|-- InputHandler
+AttackHandler <|-- HitChanceHandler
+AttackItem <|-- ManaRing
+AttackHandler <|-- CostModifierHandler
+AttackItem <|-- VigorRing
+DamageHandler <|-- TargetHandler
+MagicalWeapon <|-- MagicScepter
+AttackItem <|-- DamageRing
+Handler <|-- AttackHandler
+RessourceHandler <|-- ManaHandler
+DamageHandler <|-- HitHandler
+PhysicalWeapon <|-- Club
+Game +-- Game$ItemCreator
+CharacterTile +-- Direction
+WeaponTile <|-- MagicalWeapon
+AttackHandler <|-- CooldownHandler
+AttackHandler <|-- RessourceHandler
+PhysicalWeapon <|-- Fist
+ItemTile <|-- DefenseItem
+Disposable <|.. GdxDungeon
+ApplicationAdapter <|-- GdxDungeon
+Request <|.. AttackRequest
+Handler <|-- DamageHandler
+CharacterTile <|-- EnemyTile
+
+' Relationships
+DamageRequest "1" -- "0...*" CharacterTile : - collidableEntities >
+DamageRequest "1" -- "0...*" CharacterTile : - targets >
+
+PlayerTile "1" -- "0...*" ItemTile : - attackItems >
+PlayerTile "1" -- "0...*" ItemTile : - defenseItems >
+PlayerTile "1" -- "1" WeaponTile : - weapon >
+PlayerTile "1" -- "1" Handler : - attackChain >
+
+CharacterTile "1" -- "0...*" CharacterTile : # collidableEntities >
+CharacterTile "1" -- "1" Handler : - requestDamageChain >
+CharacterTile "1" -- "1" Game : # game >
+
+Game "1" -- "0...*" EnemyTile : - enemies >
+Game "1" -- "0...*" CharacterTile : - collidableEntities >
+Game "1" -- "0...*" ItemTile : - items >
+Game "1" -- "0...*" DamageNumber : - damageNumbers >
+Game "1" -- "1" PlayerTile : - player >
+Game "1" -- "1" MapGenerator : - mapGenerator >
+Game "1" -- "1" InputHandler : - inputHandler >
+Game "1" -- "1" SpatialHashMap : - spatialHashMap >
+Game "1" -- "1" GameHUD : - gameHUD >
+
+AttackRequest "1" -- "1" PlayerTile : - player >
+AttackRequest "1" -- "1" WeaponTile.AttackType : - attackType >
+
+EnemyTile "1" -- "1" Handler : - attackChain >
+EnemyTile "1" -- "1" WeaponTile : - weapon >
+
+GameHUD "1" -- "1" PlayerTile : - player >
+
+InputHandler "1" -- "1" Game : - game >
+InputHandler "1" -- "1" Direction : - direction >
+InputHandler "1" -- "1" Direction : - lastDirection >
+
+Handler "1" -- "1" Handler : - successor >
+
+CostModifierHandler "1" -- "1" WeaponTile.AttackType : - appliedType >
+
+MapGenerator "1" -- "0...*" WallCell : {static} wallCells >
+
+GdxDungeon "1" -- "1" Game : - game >
+
+@enduml
