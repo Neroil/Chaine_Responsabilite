@@ -4,10 +4,10 @@
 hide empty members
 hide circle
 skinparam classAttributeIconSize 0
-skinparam linetype polyline
 
 class DamageRequest {
 	- damage: int
+	- positionsAttacked: List<Vector2>
 	+ modifyDamage(factor: int): void
 	+ getDamage(): int
 	+ getCollidableEntities(): List<CharacterTile>
@@ -18,6 +18,10 @@ class DamageRequest {
 
 abstract class PhysicalWeapon {
 	+ getAttackType(): AttackType
+}
+
+abstract class MagicalWeapon {
+    + getAttackType(): AttackType
 }
 
 class PlayerTile {
@@ -65,7 +69,6 @@ class Sword {
 	+ handler(): Handler
 }
 
-
 class SpatialHashMap {
 	- {static} CELL_SIZE: int
 	- grid: Set<Rectangle>[][]
@@ -99,8 +102,8 @@ abstract class WeaponTile {
 
 
 enum AttackType {
-	+ PHYSICAL:
-	+ MAGICAL:
+	+ PHYSICAL
+	+ MAGICAL
 }
 
 class VigorHandler {
@@ -113,12 +116,59 @@ class DamageModifierHandler {
 	# handleAttackRequest(request: AttackRequest): boolean
 }
 
+class Game {
+    - map : TiledMap
+    - mapRenderer : OrthogonalTiledMapRenderer
+    - step : int
+    - isGameOver : boolean
+    - isGameWon : boolean
+    - gameHUD : GameHUD
+    + initializeGame() : void
+    + addDamageNumber(damageNumber : DamageNumber) : void
+    - generateEnemies() : void
+    - generateExit() : void
+    - generateItems() : void
+    + exitLevel() : void
+    + resetGame() : void
+    - initializeCollisionDetection() : void
+    + updateStep() : void
+    + render(batch : SpriteBatch) : void
+    + dispose() : void
+    + isGameWon() : boolean
+    + isGameOver() : boolean
+    + getMapRenderer() : OrthogonalTiledMapRenderer
+    + getPlayer() : PlayerTile
+    + getGameHUD() : GameHUD
+    + getStep() : int
+    + getItems() : LinkedList<ItemTile>
+    + getSpatialHashMap() : SpatialHashMap
+    + getInputHandler() : InputHandler
+}
+
+class AttackRequest {
+  - weaponCost : int
+  - weaponDamage : int
+  - weaponCooldown : int
+  - weaponLastAttack : long
+  - timeAttack : int
+
+  + AttackRequest(player:PlayerTile, weapon:WeaponTile, timeAttack:int)
+  + getPlayer() : PlayerTile
+  + getWeaponCost() : int
+  + getWeaponDamage() : int
+  + getWeaponCooldown() : int
+  + getWeaponLastAttack() : long
+  + modifyWeaponCost(factor:double) : void
+  + modifyWeaponDamage(factor:double) : void
+  + getAttackType() : WeaponTile.AttackType
+  + getTimeAttack() : int
+}
 
 class GameHUD {
 	- shapeRenderer: ShapeRenderer
 	- defaultTexture: TextureRegion
-	- player: PlayerTile
 	~ HUDbatch: SpriteBatch
+
 	+ setPlayer(player: PlayerTile): void
 	+ render(): void
 	- renderBars(): void
@@ -132,6 +182,57 @@ class GameHUD {
 	+ dispose(): void
 }
 
+abstract class AttackHandler {
+  + handleRequest(request:Request) : boolean
+  {abstract} protected handleAttackRequest(request:AttackRequest) : boolean
+}
+
+abstract class RessourceHandler {
+    {abstract} protected checkResources(request:AttackRequest) : boolean
+    {abstract} protected updateResources(request:AttackRequest) : void
+    + handleAttackRequest(request:AttackRequest) : boolean
+}
+
+class CooldownHandler {
+    + handleAttackRequest(request:AttackRequest) : boolean
+}
+
+class ManaHandler {
+    + checkResources(request:AttackRequest) : boolean
+    + updateResources(request:AttackRequest) : void
+}
+
+abstract class DamageHandler {
+    + handleRequest(request:Request) : boolean
+    {abstract} protected handleDamageRequest(request:DamageRequest) : boolean
+}
+
+class HitHandler {
+    + handleDamageRequest(request:DamageRequest) : boolean
+}
+
+class Club {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class Fist {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class DefenseItem {
+    + pickUp(player: PlayerTile): void
+}
+
+class DamageRing {
+    - {static} TEXTURE: TextureRegion
+    + handler(): Handler
+}
+
+class Game$ItemCreator {
+    + createItem(position: Vector2): void
+}
 
 class DamageNumber {
 	- damageText: String
@@ -144,6 +245,14 @@ class DamageNumber {
 	+ draw(batch: SpriteBatch): void
 }
 
+class EnemyTile {
+  + EnemyTile(position:Vector2, texture:TextureRegion, collidableEntities:LinkedList<CharacterTile>, game:Game)
+  + attack() : void
+  + move(spatialHashMap:SpatialHashMap) : void
+  - getRange() : float
+  - calculateDirection() : Vector2
+  + getRandomDirection() : Vector2
+}
 
 abstract class AttackItem {
 	+ pickUp(player: PlayerTile): void
@@ -152,8 +261,6 @@ abstract class AttackItem {
 class CharacterTile {
 	# healthPoint: int
 	- facingDirection: Vector2
-	- requestDamageChain: Handler
-	# game: Game
 	+ getFacingDirection(): Vector2
 	+ isAlive(): boolean
 	+ reduceLife(amount: int): void
@@ -166,7 +273,6 @@ class CharacterTile {
 	# requestDamage(request: Request): void
 }
 
-
 enum Direction {
 	+ UP
 	+ DOWN
@@ -176,11 +282,7 @@ enum Direction {
 	+ getDirection(): Vector2
 }
 
-
 class InputHandler {
-	- direction: Direction
-	- lastDirection: Direction
-	- game: Game
 	- moveDelay: float
 	- changeDirectionDelay: float
 	- changeDirectionTimer: float
@@ -203,7 +305,6 @@ class ManaRing {
 
 
 abstract class Handler {
-	- successor: Handler
 	+ setSuccessor(successor: Handler): Handler
 	+ {abstract}handleRequest(request: Request): boolean
 	# invokeSuccessor(request: Request): boolean
@@ -212,7 +313,6 @@ abstract class Handler {
 
 class CostModifierHandler {
 	- modifier: double
-	- appliedType: WeaponTile.AttackType
 	# handleAttackRequest(request: AttackRequest): boolean
 }
 
@@ -232,13 +332,19 @@ class MagicScepter {
 	+ handler(): Handler
 }
 
+class WallCell {
+    - tile: StaticTiledMapTile
+    - textureRegion: TextureRegion
+    + WallCell(tilesetTexture: Texture, x: int, y: int)
+    + getTile(): StaticTiledMapTile
+}
 
 class MapGenerator {
 	- {static} MAP_TILE_SET: String
-	- {static} WALL_CELLS: WallCell[]
 	- random: Random
 	- rooms: Array<Rectangle>
 	- corridors: Array<Rectangle>
+
 	+ clearMap(): void
 	+ initializeTextures(): void
 	+ generateProceduralMap(width: int, height: int, numRooms: int, map: TiledMap): void
@@ -262,6 +368,38 @@ class MapGenerator {
 
 class Camera {
 	~ {static} updateCameraPosition(camera: OrthographicCamera, position: Vector2): void
+}
+
+class EnemyTile {
+    + EnemyTile(position:Vector2, texture:TextureRegion, collidableEntities:LinkedList<CharacterTile>, game:Game)
+    + attack() : void
+    + move(spatialHashMap:SpatialHashMap) : void
+    - getRange() : float
+    - calculateDirection() : Vector2
+    + getRandomDirection() : Vector2
+}
+
+class SpriteTile {
+  + position: Vector2
+  - sprite: Sprite
+  # texture: TextureRegion
+
+  + SpriteTile(position:Vector2, texture:TextureRegion)
+  + draw(batch:SpriteBatch) : void
+  + getBoundingBox() : Rectangle
+  + snapToTileCenter() : void
+  + getTexture() : TextureRegion
+}
+
+class GdxDungeon {
+    - batch : SpriteBatch
+    - camera : OrthographicCamera
+    - pixelScaleFactor : float
+
+    + create() : void
+    + render() : void
+    - updateCamera() : void
+    + dispose() : void
 }
 
 ' Heritage
@@ -289,6 +427,7 @@ RessourceHandler <|-- ManaHandler
 DamageHandler <|-- HitHandler
 PhysicalWeapon <|-- Club
 Game +-- Game$ItemCreator
+CharacterTile +-- Direction
 WeaponTile <|-- MagicalWeapon
 AttackHandler <|-- CooldownHandler
 AttackHandler <|-- RessourceHandler
@@ -301,47 +440,46 @@ Handler <|-- DamageHandler
 CharacterTile <|-- EnemyTile
 
 ' Relationships
-DamageRequest "1" -- "0...*" CharacterTile : collidableEntities >
-DamageRequest "1" -- "0...*" CharacterTile : targets >
-DamageRequest "1" -- "0...*" Vector2 : positionsAttacked >
+DamageRequest "1" -- "0...*" CharacterTile : - collidableEntities >
+DamageRequest "1" -- "0...*" CharacterTile : - targets >
 
-PlayerTile "1" -- "0...*" ItemTile : attackItems >
-PlayerTile "1" -- "0...*" ItemTile : defenseItems >
-PlayerTile "1" -- "1" WeaponTile : weapon >
+PlayerTile "1" -- "0...*" ItemTile : - attackItems >
+PlayerTile "1" -- "0...*" ItemTile : - defenseItems >
+PlayerTile "1" -- "1" WeaponTile : - weapon >
+PlayerTile "1" -- "1" Handler : - attackChain >
 
-VigorHandler --|> Handler
-DamageModifierHandler --|> Handler
+CharacterTile "1" -- "0...*" CharacterTile : # collidableEntities >
+CharacterTile "1" -- "1" Handler : - requestDamageChain >
+CharacterTile "1" -- "1" Game : # game >
 
-PlayerTile "1" -- "0...*" ItemTile : attackItems
-PlayerTile "1" -- "0...*" ItemTile : defenseItems
-PlayerTile "1" -- "1" Handler : attackChain
+Game "1" -- "0...*" EnemyTile : - enemies >
+Game "1" -- "0...*" CharacterTile : - collidableEntities >
+Game "1" -- "0...*" ItemTile : - items >
+Game "1" -- "0...*" DamageNumber : - damageNumbers >
+Game "1" -- "1" PlayerTile : - player >
+Game "1" -- "1" MapGenerator : - mapGenerator >
+Game "1" -- "1" InputHandler : - inputHandler >
+Game "1" -- "1" SpatialHashMap : - spatialHashMap >
+Game "1" -- "1" GameHUD : - gameHUD >
 
-Ladder --|> ItemTile
+AttackRequest "1" -- "1" PlayerTile : - player >
+AttackRequest "1" -- "1" WeaponTile.AttackType : - attackType >
 
-Sword --|> WeaponTile
+EnemyTile "1" -- "1" Handler : - attackChain >
+EnemyTile "1" -- "1" WeaponTile : - weapon >
 
-AttackItem --|> ItemTile
+GameHUD "1" -- "1" PlayerTile : - player >
 
-CharacterTile "1" -- "0...*" CharacterTile : collidableEntities
-CharacterTile "1" -- "1" Vector2 : facingDirection
-CharacterTile "1" -- "1" Handler : requestDamageChain
+InputHandler "1" -- "1" Game : - game >
+InputHandler "1" -- "1" Direction : - direction >
+InputHandler "1" -- "1" Direction : - lastDirection >
 
-ManaRing --|> ItemTile
+Handler "1" -- "1" Handler : - successor >
 
-VigorRing --|> ItemTile
+CostModifierHandler "1" -- "1" WeaponTile.AttackType : - appliedType >
 
-MagicScepter --|> WeaponTile
+MapGenerator "1" -- "0...*" WallCell : {static} wallCells >
 
-TargetHandler --|> Handler
-
-CostModifierHandler --|> Handler
-
-HitChanceHandler --|> Handler
-
-InputHandler "1" -- "1" Game : game
-
-MapGenerator "1" -- "1" TiledMap
-
-Camera --|> OrthographicCamera
+GdxDungeon "1" -- "1" Game : - game >
 
 @enduml
